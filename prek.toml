@@ -1,0 +1,179 @@
+# prek configuration — https://github.com/j178/prek
+#
+# prek is a Rust reimplementation of pre-commit and reads the same hook
+# definitions. We declare our hooks here; run `prek install` to wire them
+# into git, and `prek run --all-files` to lint the whole repo.
+
+[[repos]]
+repo = "builtin"
+
+[[repos.hooks]]
+id = "check-yaml"
+
+[[repos.hooks]]
+id = "check-json"
+
+[[repos.hooks]]
+id = "pretty-format-json"
+args = ["--autofix", "--no-sort-keys", "--no-ensure-ascii"]
+
+[[repos.hooks]]
+id = "end-of-file-fixer"
+
+[[repos.hooks]]
+id = "trailing-whitespace"
+
+[[repos.hooks]]
+id = "mixed-line-ending"
+
+[[repos]]
+repo = "https://github.com/igorshubovych/markdownlint-cli"
+rev = "v0.42.0"
+
+[[repos.hooks]]
+id = "markdownlint"
+args = ["--config", ".markdownlint.json"]
+
+# Validate SKILL.md against the Agent Skills spec using the official
+# reference library: https://github.com/agentskills/agentskills/tree/main/skills-ref
+[[repos]]
+repo = "local"
+
+[[repos.hooks]]
+id = "validate-skill-md"
+name = "Validate SKILL.md (skills-ref)"
+entry = "scripts/prek-hooks/validate-skill-md.py"
+language = "system"
+files = "^skills/[^/]+/SKILL\\.md$"
+
+[[repos.hooks]]
+id = "guard-nfcore-modules"
+name = "Block direct edits to modules/nf-core"
+entry = "scripts/prek-hooks/guard-nfcore-modules.sh"
+language = "system"
+files = "(^|/)modules/nf-core/"
+pass_filenames = true
+
+[[repos.hooks]]
+id = "lint-schema"
+name = "Lint nextflow schema"
+entry = "scripts/prek-hooks/lint-schema.sh"
+language = "system"
+files = "(^|/)nextflow_schema\\.json$"
+pass_filenames = true
+
+[[repos.hooks]]
+id = "check-param-drift"
+name = "Check config/schema param drift"
+entry = "scripts/prek-hooks/check-param-drift.sh"
+language = "system"
+files = "(^|/)nextflow\\.config$"
+pass_filenames = true
+
+[[repos.hooks]]
+id = "lint-local-module"
+name = "Lint nf-core local modules"
+entry = "scripts/prek-hooks/lint-local-module.sh"
+language = "system"
+files = "(^|/)modules/local/"
+pass_filenames = true
+
+[[repos.hooks]]
+id = "check-nftest-exists"
+name = "Require nf-test for local nf files"
+entry = "scripts/prek-hooks/check-nftest-exists.sh"
+language = "system"
+files = "(^|/)(modules/local|subworkflows/local|workflows)/.*\\.nf$"
+pass_filenames = true
+
+
+[[repos.hooks]]
+id = "test-nf-core-harness-hooks"
+name = "Test nf-core harness hooks"
+entry = "tests/prek-hooks/run-tests.py"
+language = "system"
+files = '^(scripts/prek-hooks/nf_core_harness\.py|scripts/prek-hooks/nf-core-.*\.py|scripts/agent_hooks/.*\.py|tests/prek-hooks/.*\.py)$'
+pass_filenames = false
+
+[[repos.hooks]]
+id = "nf-core-pipelines-lint"
+name = "Run nf-core pipelines lint"
+entry = "scripts/prek-hooks/nf-core-pipelines-lint.py"
+language = "system"
+files = '(^|/)(nextflow\.config|nextflow_schema\.json|modules\.json|nf-core\.yml|README\.md|CHANGELOG\.md|conf/.*|workflows/.*|modules/(local|nf-core)/.*|subworkflows/(local|nf-core)/.*)$'
+pass_filenames = true
+
+[[repos.hooks]]
+id = "nf-core-component-lint"
+name = "Run nf-core component lint"
+entry = "scripts/prek-hooks/nf-core-component-lint.py"
+language = "system"
+files = '(^|/)(modules/local|subworkflows/local)/'
+pass_filenames = true
+
+[[repos.hooks]]
+id = "nf-core-schema-check"
+name = "Run nf-core schema lint/build check"
+entry = "scripts/prek-hooks/nf-core-schema-check.py"
+language = "system"
+files = '(^|/)(nextflow\.config|nextflow_schema\.json)$'
+pass_filenames = true
+
+[[repos.hooks]]
+id = "check-changelog"
+name = "Require CHANGELOG for user-visible changes"
+entry = "scripts/prek-hooks/check-changelog.sh"
+language = "system"
+pass_filenames = false
+always_run = true
+
+[[repos.hooks]]
+id = "check-claude-hooks-schema"
+name = "Validate Claude Code hooks schema"
+entry = "scripts/prek-hooks/check-claude-hooks-schema.sh"
+language = "system"
+files = "(^|/)\\.claude/settings\\.json$"
+pass_filenames = true
+
+[[repos.hooks]]
+id = "check-codex-plugin"
+name = "Validate Codex plugin manifests and marketplace"
+entry = "scripts/prek-hooks/check-codex-plugin.py"
+language = "system"
+files = '(^plugins/[^/]+/\.codex-plugin/plugin\.json$|^\.agents/plugins/marketplace\.json$)'
+pass_filenames = true
+
+[[repos]]
+repo = "https://github.com/python-jsonschema/check-jsonschema"
+rev = "0.37.2"
+
+[[repos.hooks]]
+id = "check-jsonschema"
+alias = "validate-cursor-plugin-manifest"
+name = "Validate Cursor plugin manifest"
+args = ["--schemafile", "https://raw.githubusercontent.com/cursor/plugins/main/schemas/plugin.schema.json"]
+files = '(^|/)\.cursor-plugin/plugin\.json$'
+
+[[repos.hooks]]
+id = "check-jsonschema"
+alias = "validate-cursor-marketplace-manifest"
+name = "Validate Cursor marketplace manifest"
+args = ["--schemafile", "https://raw.githubusercontent.com/cursor/plugins/main/schemas/marketplace.schema.json"]
+files = '(^|/)\.cursor-plugin/marketplace\.json$'
+
+[[repos.hooks]]
+id = "check-jsonschema"
+alias = "validate-claude-plugin-manifest"
+name = "Validate Claude Code plugin manifest"
+args = ["--schemafile", "https://json.schemastore.org/claude-code-plugin-manifest.json"]
+files = '(^|/)\.claude-plugin/plugin\.json$'
+
+[[repos.hooks]]
+id = "check-jsonschema"
+alias = "validate-claude-marketplace-manifest"
+name = "Validate Claude Code marketplace manifest"
+args = ["--schemafile", "https://json.schemastore.org/claude-code-marketplace.json"]
+files = '(^|/)\.claude-plugin/marketplace\.json$'
+
+[[repos.hooks]]
+id = "check-github-workflows"
