@@ -1,0 +1,25 @@
+{
+  "name": "nf-core-tools",
+  "displayName": "nf-core Tools",
+  "version": "0.1.0",
+  "description": "Cross-agent nf-core checks and workflow guardrails powered by shared prek hooks.",
+  "author": {
+    "name": "nf-core",
+    "email": "infrastructure@nf-co.re"
+  },
+  "publisher": "nf-core",
+  "homepage": "https://github.com/nf-core/agents/tree/main/plugins/nf-core-tools",
+  "repository": "https://github.com/nf-core/agents",
+  "license": "MIT",
+  "keywords": [
+    "nf-core",
+    "nextflow",
+    "lint",
+    "bioinformatics",
+    "workflows"
+  ],
+  "category": "Developer Tools",
+  "skills": "./skills/",
+  "hooks": "./hooks/cursor.json",
+  "mcpServers": "./.mcp.json"
+}

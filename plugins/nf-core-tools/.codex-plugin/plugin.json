@@ -1,0 +1,46 @@
+{
+  "name": "nf-core-tools",
+  "version": "0.1.0",
+  "description": "Cross-agent nf-core checks and workflow guardrails powered by shared prek hooks.",
+  "author": {
+    "name": "nf-core",
+    "email": "infrastructure@nf-co.re",
+    "url": "https://nf-co.re"
+  },
+  "homepage": "https://github.com/nf-core/agents/tree/main/plugins/nf-core-tools",
+  "repository": "https://github.com/nf-core/agents",
+  "license": "MIT",
+  "keywords": [
+    "nf-core",
+    "nextflow",
+    "lint",
+    "bioinformatics",
+    "workflows"
+  ],
+  "skills": "./skills/",
+  "hooks": "./hooks/codex.json",
+  "mcpServers": "./.mcp.json",
+  "apps": "./.app.json",
+  "interface": {
+    "displayName": "nf-core Tools",
+    "shortDescription": "Shared nf-core checks for Codex, Claude, Cursor.",
+    "longDescription": "Runs deterministic nf-core checks via shared prek hook IDs (schema lint, param drift, nf-test, changelog, and module guardrails).",
+    "developerName": "nf-core",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Read",
+      "Write",
+      "Execute"
+    ],
+    "websiteURL": "https://github.com/nf-core/agents",
+    "privacyPolicyURL": "https://github.com/site/privacy",
+    "termsOfServiceURL": "https://docs.github.com/en/site-policy/github-terms/github-terms-of-service",
+    "defaultPrompt": [
+      "Run prek run --all-files and summarize failing nf-core hooks.",
+      "Run one failing hook by id and propose the smallest fix.",
+      "Check nextflow.config vs nextflow_schema.json drift and patch."
+    ],
+    "brandColor": "#0EA5A4",
+    "screenshots": []
+  }
+}
