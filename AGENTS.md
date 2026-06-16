@@ -8,6 +8,9 @@ Unless otherwise stated, all code in the repository is written in the Nextflow p
 ## Natural language
 All comments and documentation must be written in English with British spelling. Documentation files should additionally follow the style guide at https://nf-co.re/docs/developing/documentation/style-guide.
 
+## Nextflow pitfalls
+TBC
+
 ## nf-core template structure
 The directory you are working on was created with the nf-core pipeline template. It follows a strict directory structure, demonstrated below:
 
@@ -118,12 +121,55 @@ Nextflow is designed for parallel processing of multiple samples. To facilitate 
 
 The meta map should at least contain an `id` field with a unique identifier. nf-core modules and subworkflows may only access `id` and `single_end` fields. Local modules, subworkflows, and the workflow may create and access any meta fields that are useful for the pipeline.
 
-### nf-core tools
+## nf-core tools
 nf-core provides a CLI toolkit for working with the nf-core template. The core command is `nf-core`. You should always prefer using the tools to creating files manually when possible.
 
 The following subcommands are most relevant to your work:
 - `nf-core modules create {name}`: create a new local module
+- `nf-core modules info {name}`: obtain detailed information about an nf-core module
 - `nf-core modules install {name}`: install a module from a remote repository
-- `nf-core modules list remote`: list all available nf-core modules
+- `nf-core modules list remote [query]`: list all available nf-core modules; if a query is provided only matching modules are returned
 - `nf-core modules patch {name}`: generate a patch file after editing an nf-core module
 - `nf-core modules update {name}`: update a previously installed remote module
+- `nf-core pipelines lint`: run lint tests on a pipeline directory
+- `nf-core subworkflows create {name}`: create a local subworkflow
+- `nf-core subworkflows info {name}`: obtain detailed information about an nf-core subworkflow
+- `nf-core subworkflows install {name}`: install a subworkflow from a remote repository
+- `nf-core subworkflows list remote [query]`: list all available nf-core subworkflows; if a query is provided only matching modules are returned
+- `nf-core subworkflows update {name}`: update a previously installed nf-core subworkflow
+
+The {name} for subtool modules must be written with a slash, like `samtools/sort`.
+
+You can find the complete documentation for nf-core tools at https://nf-co.re/docs/nf-core-tools/.
+
+## nf-test and testing
+nf-core uses a testing framework called nf-test to create and run module, subworkflow, and pipeline tests. Each pipeline must have at least 1 test case, with a normal and stub variant. Tests have a standardized syntax, with setup (optional), input, and assertion sections. Tests at a path can be executed with `nf-test test {path}`.
+
+Most tests create at least 1 snapshot file that contains a combination of file counts, file paths, and file hashes. The snapshots are used to verify output stability. Never edit snapshots manually. If you expect the output to change (e.g. after a tool update), you can update the snapshot with `nf-test test --update-snapshot`.
+
+## Branch policy
+This repository has at least 3 git branches: `main` (or `master`), `dev`, and `TEMPLATE`. The TEMPLATE branch is managed by nf-core tools and it is forbidden to switch to it or run any command that would write to it. Directly writing to `main` is also forbidden, and all changes to that branch must be made through a pull request.
+
+If you are working directly in the nf-core repository (git origin is `nf-core/{pipeline}`), you must create a new branch for each feature (with a meaningful name) and open a pull request to `dev`. If you are working on a fork (`{username}/{pipeline}`), you can push directly to origin/dev and open a PR to upstream/dev.
+
+If you only want to fix a bug in a released version of a pipeline, you should instead create a branch called `patch` from `main`, work in it, and open a PR to nf-core main once done.
+
+## Commit rules and routine
+Each commit should be as atomic as possible, that is, only contain one logical change. There is no limit on the number of files in a commit. There is no mandated commit message format, but the commit title should be concise and written in imperative mood. If the commit consists only of installing or updating an nf-core module or subworkflow, limit the commit title to `Install/update nf-core module/subworkflow {name}`.
+
+Before each commit, perform all of the following:
+1. Run `nextflow lint .` to lint all Nextflow scripts in the repository. Resolve all errors and all possible warnings. Repeat until there are no solvable outstanding issues.
+2. Run `nf-core pipelines lint`, resolve all errors and all possible warnings. Repeat until there are no solvable outstanding issues. If you are preparing a release (PR to main), use `nf-core pipelines lint --release` instead.
+3. Run `nf-test test tests/`. If the pipeline fails, resolve the underlying issues. If the test fails due to mismatching snapshots, update them with `nf-test test tests/ --update-snapshot` only if you expect the specific change in the output. Otherwise, fix the issue that caused the unexpected change.
+4. Run `prek` and stage all changes it generates.
+After completing these steps, you are free to commit your changes.
+
+## PR procedure
+Changes to nf-core `dev` and `main` branches must be made through GitHub pull request. A PR should generally contain a single feature. The PR must use and follow the nf-core PR template, including the checklist. The PR message should start with a brief explanation of the changes made and the motivation.
+
+Each PR requires reviews: 1 for dev, 2 for main. Advise the user to ask for reviews in the nf-core Slack, in `#request-review` (for dev PRs) or `#release-review-trading` (for main PRs). There is also a CI pipeline executed on each PR. All checks must pass before the PR can be merged.
+
+## Agent self-disclosure
+As an AI agent, you are required to acknowledge your activity in nf-core. If you generated a majority of the code in a commit, add "This commit was generated by {your name}" at the of the commit message body. If you open a PR autonomously, add "This pull request was created by {your name}" at the end of the PR message (above the checklist).
+
+This is the end of the nf-core guidance.
