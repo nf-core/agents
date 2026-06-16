@@ -28,7 +28,7 @@ The directory you are working on was created with the nf-core pipeline template.
 |   ├── script.py // all scripts must start with a shebang and carry a licence/author header
 |   └── other_script.R
 ├── CHANGELOG.md // changelog, should be updated after every substantial change
-├── CITATIONS.md // list of tool citations, should be updated when new tools are added
+├── CITATIONS.md // list of tool citations, updated with nf-core tools
 ├── conf                        // directory containing Nextflow configurations for the pipeline
 │   ├── base.config             // config file with default nf-core settings, do not edit
 │   ├── igenomes.config         // config file with AWS paths for common reference genomes, do not edit
@@ -101,6 +101,8 @@ You should generally not edit nf-core modules in the pipeline repository. You ma
 
 The pipeline also has a local modules directory. If a task cannot be reasonably achieved with existing nf-core modules and has no use outside of the pipeline, you can create a local module for it. Use nf-core tools (see below) to create the module boilerplate and then edit the files.
 
+Each nf-core module exposes special configuration options `ext.args` and `ext.prefix`. You can use `ext.args` to pass any command-line arguments (except input files) to the underlying tool. You can use `ext.prefix` to customize the name of the output files. If you want to include runtime variables in either of those arguments, you can use Groovy-style closures, for example: `ext.prefix = { "${meta.id}_filtered" }`.
+
 ## Subworkflows
 The same repository also contains nf-core subworkflows. Use them whenever they are relevant to the task. If none is applicable, you can create local subworkflows liberally.
 
@@ -152,10 +154,12 @@ Most tests create at least 1 snapshot file that contains a combination of file c
 
 Full nf-test documentation is available at https://www.nf-test.com/docs/getting-started/ and other pages inside https://www.nf-test.com/docs/.
 
-## Branch policy
+## git and branch policy
 This repository has at least 3 git branches: `main` (or `master`), `dev`, and `TEMPLATE`. The TEMPLATE branch is managed by nf-core tools and it is forbidden to switch to it or run any command that would write to it. Directly writing to `main` is also forbidden, and all changes to that branch must be made through a pull request.
 
 Always create a new branch with a meaningful name for each feature, whether you are working directly in the nf-core repository (origin `nf-core/{pipeline}`) or on a fork (`{username}/{pipeline}`), then open a pull request to `dev`. Do not commit feature work directly to `dev`, even on a fork, so that each PR stays scoped to a single feature.
+
+If you work on multiple features in parallel, use a separate worktree for each task to prevent clobber.
 
 If you only want to fix a bug in a released version of a pipeline, you should instead create a branch called `patch` from `main`, work in it, and open a PR to nf-core main once done.
 
@@ -164,10 +168,17 @@ Each commit should be as atomic as possible, that is, only contain one logical c
 
 Before each commit, perform all of the following:
 1. Run `nextflow lint .` to lint all Nextflow scripts in the repository. Resolve all errors and all possible warnings. Repeat until there are no solvable outstanding issues.
-2. Run `nf-core pipelines lint`, resolve all errors and all possible warnings. Repeat until there are no solvable outstanding issues. If you are preparing a release (PR to main), use `nf-core pipelines lint --release` instead.
-3. Run `nf-test test tests/`. If the pipeline fails, resolve the underlying issues. If the test fails due to mismatching snapshots, update them with `nf-test test tests/ --update-snapshot` only if you expect the specific change in the output. Otherwise, fix the issue that caused the unexpected change.
-4. Run `prek` and stage all changes it generates.
+2. Run `prek` and stage all changes it generates.
 After completing these steps, you are free to commit your changes.
+
+## Push routine
+You can push changes to GitHub as often as required, especially during PR review, but you should only push after implementing some meaningful changes. Only push if the code is working.
+
+Before pushing, ensure nf-core linting is passing. Run `nf-core pipelines lint`, resolve all errors and all possible warnings. Repeat until there are no solvable outstanding issues. If you are preparing a release (PR to main), use `nf-core pipelines lint --release` instead.
+
+You must also ensure that nf-test tests are passing. Run `nf-test test tests/`. If the pipeline fails, resolve the underlying issues. If the test fails due to mismatching snapshots, update them with `nf-test test tests/ --update-snapshot` only if you expect the specific change in the output and the architecture of the current device matches that of the CI runner. Otherwise, fix the issue that caused the unexpected change.
+
+GitHub Actions will run CI for every push. If you know the code will cause issues or you intend to push more changes, add `[skip ci]` at the end of the commit title. Omit this tag if the changes are final, especially right before a PR or when you want the code to be reviewed.
 
 ## PR procedure
 Changes to nf-core `dev` and `main` branches must be made through GitHub pull request. A PR should generally contain a single feature. The PR must use and follow the nf-core PR template, including the checklist. The PR message should start with a brief explanation of the changes made and the motivation.
