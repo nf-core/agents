@@ -25,7 +25,7 @@ The directory you are working on was created with the nf-core pipeline template.
 │   ├── samplesheet.csv    // example valid samplesheet
 │   └── schema_input.json  // JSON schema describing the samplesheet format
 ├── bin           // scripts for local modules
-|   ├── script.py // all scripts must start with a shebang
+|   ├── script.py // all scripts must start with a shebang and carry a licence/author header
 |   └── other_script.R
 ├── CHANGELOG.md // changelog, should be updated after every substantial change
 ├── CITATIONS.md // list of tool citations, should be updated when new tools are added
@@ -79,7 +79,7 @@ The directory you are working on was created with the nf-core pipeline template.
 │   ├── nextflow.config      // configuration used in tests only
 |   ├── other.nf.test        // other tests might exist if the pipeline has multiple modes
 │   └── other.nf.test.snap   // every test must have a snapshot
-├── tower.yml   // configuration for running in Seqera Platform
+├── tower.yml   // Files to display in Seqera Platform once the pipeline is done running
 └── workflows   // do not add files 
     └── demo.nf // Nextflow file containing main pipeline logic
 ```
@@ -115,7 +115,7 @@ Nextflow automatically reads settings from a file called `nextflow.config`. In n
 - base.config: contains default resource allocation for modules; it is defined by nf-core and should not be edited
 - igenomes.config: contains paths to common reference genomes in a custom AWS S3 bucket; do not edit
 - igenomes_ignored.config: contains replacement settings when iGenomes is not used; do not edit
-- modules.config: contains settings for all modules; should contain a single `process` block with multiple `withName` selectors; edit as required
+- modules.config: contains settings for all modules; should contain a single `process` block with multiple `withName` selectors; this is where you set `ext.args` (extra command-line arguments) and `ext.prefix` (output file naming) per module; edit as required
 - test.config: contains parameters and settings for a minimal self-test; this test should take a few minutes and only test the basic functionality with minimal input
 - test_full.config: contains parameters and settings for a complete self-test; this test should check as much functionality as possible with realistic input, and has no runtime limit
 
@@ -148,14 +148,14 @@ You can find the complete documentation for nf-core tools at https://nf-co.re/do
 ## nf-test and testing
 nf-core uses a testing framework called nf-test to create and run module, subworkflow, and pipeline tests. Each pipeline must have at least 1 test case, with a normal and stub variant. Tests have a standardized syntax, with setup (optional), input ("when"), and assertion ("then") sections. Tests at a path can be executed with `nf-test test {path}`.
 
-Most tests create at least 1 snapshot file that contains a combination of file counts, file paths, and file hashes. The snapshots are used to verify output stability. Never edit snapshots manually. If you expect the output to change (e.g. after a tool update), you can update the snapshot with `nf-test test --update-snapshot`.
+Most tests create at least 1 snapshot file that contains a combination of file counts, file paths, and file hashes. The snapshots are used to verify output stability. Never edit snapshots manually. If you expect the output to change (e.g. after a tool update), you can update the snapshot with `nf-test test --update-snapshot`. Be aware that file hashes can differ between CPU architectures (e.g. arm64 vs x86_64); regenerate snapshots on the same architecture as CI, or CI will fail on hashes you updated locally.
 
 Full nf-test documentation is available at https://www.nf-test.com/docs/getting-started/ and other pages inside https://www.nf-test.com/docs/.
 
 ## Branch policy
 This repository has at least 3 git branches: `main` (or `master`), `dev`, and `TEMPLATE`. The TEMPLATE branch is managed by nf-core tools and it is forbidden to switch to it or run any command that would write to it. Directly writing to `main` is also forbidden, and all changes to that branch must be made through a pull request.
 
-If you are working directly in the nf-core repository (git origin is `nf-core/{pipeline}`), you must create a new branch for each feature (with a meaningful name) and open a pull request to `dev`. If you are working on a fork (`{username}/{pipeline}`), you can push directly to origin/dev and open a PR to upstream/dev.
+Always create a new branch with a meaningful name for each feature, whether you are working directly in the nf-core repository (origin `nf-core/{pipeline}`) or on a fork (`{username}/{pipeline}`), then open a pull request to `dev`. Do not commit feature work directly to `dev`, even on a fork, so that each PR stays scoped to a single feature.
 
 If you only want to fix a bug in a released version of a pipeline, you should instead create a branch called `patch` from `main`, work in it, and open a PR to nf-core main once done.
 
@@ -175,6 +175,6 @@ Changes to nf-core `dev` and `main` branches must be made through GitHub pull re
 Each PR requires reviews: 1 for dev, 2 for main. Advise the user to ask for reviews in the nf-core Slack, in `#request-review` (for dev PRs) or `#release-review-trading` (for main PRs). There is also a CI pipeline executed on each PR. All checks must pass before the PR can be merged.
 
 ## Agent self-disclosure
-As an AI agent, you are required to acknowledge your activity in nf-core. If you generated a majority of the code in a commit, add "This commit was generated by {your name}" at the of the commit message body. If you open a PR autonomously, add "This pull request was created by {your name}" at the end of the PR message (above the checklist).
+As an AI agent, you are required to acknowledge your activity in nf-core. If you generated a majority of the code in a commit, add "This commit was generated by {your name}" at the end of the commit message body. If you open a PR autonomously, add "This pull request was created by {your name}" at the end of the PR message (above the checklist).
 
 This is the end of the nf-core guidance.
