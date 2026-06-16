@@ -143,9 +143,11 @@ The {name} for subtool modules must be written with a slash, like `samtools/sort
 You can find the complete documentation for nf-core tools at https://nf-co.re/docs/nf-core-tools/.
 
 ## nf-test and testing
-nf-core uses a testing framework called nf-test to create and run module, subworkflow, and pipeline tests. Each pipeline must have at least 1 test case, with a normal and stub variant. Tests have a standardized syntax, with setup (optional), input, and assertion sections. Tests at a path can be executed with `nf-test test {path}`.
+nf-core uses a testing framework called nf-test to create and run module, subworkflow, and pipeline tests. Each pipeline must have at least 1 test case, with a normal and stub variant. Tests have a standardized syntax, with setup (optional), input ("when"), and assertion ("then") sections. Tests at a path can be executed with `nf-test test {path}`.
 
 Most tests create at least 1 snapshot file that contains a combination of file counts, file paths, and file hashes. The snapshots are used to verify output stability. Never edit snapshots manually. If you expect the output to change (e.g. after a tool update), you can update the snapshot with `nf-test test --update-snapshot`.
+
+Full nf-test documentation is available at https://www.nf-test.com/docs/getting-started/ and other pages inside https://www.nf-test.com/docs/.
 
 ## Branch policy
 This repository has at least 3 git branches: `main` (or `master`), `dev`, and `TEMPLATE`. The TEMPLATE branch is managed by nf-core tools and it is forbidden to switch to it or run any command that would write to it. Directly writing to `main` is also forbidden, and all changes to that branch must be made through a pull request.
