@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": null,
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./scripts/agent_hooks/run_phase.py stop --provider codex",
+            "timeout": 600,
+            "statusMessage": "Running nf-core stop checks"
+          }
+        ]
+      }
+    ]
+  }
+}
