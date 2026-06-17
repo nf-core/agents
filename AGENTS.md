@@ -166,10 +166,7 @@ If you only want to fix a bug in a released version of a pipeline, you should in
 ## Commit rules and routine
 Each commit should be as atomic as possible, that is, only contain one logical change. There is no limit on the number of files in a commit. There is no mandated commit message format, but the commit title should be concise and written in imperative mood. If the commit consists only of installing or updating an nf-core module or subworkflow, limit the commit title to `Install/update nf-core module/subworkflow {name}`.
 
-Before each commit, perform all of the following:
-1. Run `nextflow lint .` to lint all Nextflow scripts in the repository. Resolve all errors and all possible warnings. Repeat until there are no solvable outstanding issues.
-2. Run `prek` and stage all changes it generates.
-After completing these steps, you are free to commit your changes.
+Before each commit, run `prek` and stage all changes it generates. Resolve all errors and all possible warnings. Repeat until there are no solvable outstanding issues. After that, you are free to commit your changes.
 
 ## Push routine
 You can push changes to GitHub as often as required, especially during PR review, but you should only push after implementing some meaningful changes. Only push if the code is working.
