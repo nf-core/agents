@@ -138,8 +138,6 @@ Always create a new branch with a meaningful name for each feature, whether you 
 
 If you work on multiple features in parallel, you **SHOULD** use a separate worktree for each task to prevent clobber.
 
-If you only want to fix a bug in a released version of a pipeline, you **SHOULD** instead create a branch called `patch` from `main`, work in it, and open a PR to nf-core main once done.
-
 ## Commit rules and routine
 Each commit **SHOULD** contain one logical change. There is no limit on the number of files in a commit. The commit title **SHOULD** be concise and written in imperative mood. If the commit consists only of installing or updating an nf-core module or subworkflow, limit the commit title to `Install/update nf-core module/subworkflow {name}`.
 
