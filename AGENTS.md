@@ -86,16 +86,17 @@ Several files have been skipped from the treemap. If a file is not in the treema
 - **Pipeline**: a complete, executable Nextflow project that defines workflow logic, input handling, and output publishing
 
 ## Modules
-nf-core has a remote module repository at https://github.com/nf-core/modules. You **SHOULD** use them to implement existing tools. You can find available modules and install modules with nf-core tools (see "nf-core tools" section below).
-
-You **SHOULD NOT** edit nf-core modules in the pipeline repository. You **MAY** edit their `main.nf` if necessary. If you do it, you **MUST** run `nf-core modules patch {name}` afterwards.
-
-The pipeline also has a local modules directory. If a script is only useful within this pipeline, you **MAY** create a local module for it. You **SHOULD** nf-core tools (see below) to create the module boilerplate and then edit the files.
-
-Use `ext.args` to pass any command-line arguments (except input files) to the underlying tool. Use `ext.prefix` to customize the name of the output files. To include runtime variables in those arguments, use Groovy-style closures, for example: `ext.prefix = { "${meta.id}_filtered" }`, usually through the modules.config file.
+- You **SHOULD** use nf-core modules to implement existing tools.
+- You can find available modules and install modules with nf-core tools (see "nf-core tools" section below).
+- You **SHOULD NOT** edit nf-core modules in the pipeline repository. You **MAY** edit their `main.nf` if necessary. If you do it, you **MUST** run `nf-core modules patch {name}` afterwards.
+- The pipeline has a local modules directory. If a script is only useful within this pipeline, you **MAY** create a local module for it.
+- Use nf-core tools (see below) to create local module boilerplate and then edit the files.
+- Use `ext.args` to pass any command-line arguments (except input files) to the underlying tool.
+- Use `ext.prefix` to customize the name of the output files. To include runtime variables in those arguments, use Groovy-style closures, for example: `ext.prefix = { "${meta.id}_filtered" }`, usually through the modules.config file.
 
 ## Subworkflows
-You **SHOULD** nf-core subworkflows that are relevant to the pipeline tasks. If none is applicable, create a local subworkflow when it thematically makes sense.
+- You **SHOULD** nf-core subworkflows that are relevant to the pipeline tasks.
+- If none is applicable, create a local subworkflow when it thematically makes sense.
 
 ## Pipeline structure
 An nf-core pipeline contains 3 main parts called by the root `workflow` block in `main.nf`:
@@ -115,7 +116,10 @@ The following configuration files exist by default:
 ## Meta map
 The meta map is a Nextflow map passed along with each file that contains sample-specific information. The map is created during input processing and passed through modules.
 
-The meta map **MUST** contain an `id` field with a unique identifier. nf-core modules and subworkflows may only access `id` and `single_end` fields. Local modules, subworkflows, and the workflow may create and access any meta fields that are useful for the pipeline.
+- The meta map **MUST** contain an `id` field with a unique identifier.
+- nf-core modules and subworkflows may **only** access `id` and `single_end` fields.
+- Local modules, subworkflows, and workflows may create and access any meta fields that are useful for the pipeline.
+- Channel operations **MUST** preserve the meta map when present.
 
 ## nf-core tools
 nf-core provides a CLI toolkit for working with the nf-core template. The core command is `nf-core`. You **SHOULD** always use the tools instead of creating files manually.
@@ -125,40 +129,43 @@ Use `nf-core --help` to obtain information about nf-core commands. You can also 
 Write the names of subtool modules in commands with a slash, like `samtools/sort`.
 
 ## nf-test and testing
-nf-core uses a testing framework called nf-test to create and run module, subworkflow, and pipeline tests. Each pipeline **MUST** have at least 1 test case. Tests have a standardized syntax, with setup (optional), input ("when"), and assertion ("then") sections. Tests at a path can be executed with `nf-test test {path}`.
-
-Most tests create at least 1 snapshot file. You **MUST NOT** edit snapshots manually. If you expect the output to change (e.g. after a tool update), you can update the snapshot with `nf-test test --profile +{docker|singularity|conda} --update-snapshot`. Be aware that file hashes can differ between CPU architectures (e.g. arm64 vs x86_64); regenerate snapshots on the same architecture as CI, or CI will fail on hashes you updated locally.
-
-nf-test documentation is available at .
+- Each pipeline **MUST** have at least 1 test case.
+- Tests have a standardized syntax, with setup (optional), input ("when"), and assertion ("then") sections.
+- Tests at a path can be executed with `nf-test test {path}`.
+- Most tests create at least 1 snapshot file. You **MUST NOT** edit snapshots manually.
+- If you expect the output to change (e.g. after a tool update), update the snapshot with `nf-test test --profile +{docker|singularity|conda} --update-snapshot`. Only regenerate snapshots on the same CPU architecture as CI.
 
 ## git and branch policy
-This repository has at least 3 git branches: `main` (or `master`), `dev`, and `TEMPLATE`. The TEMPLATE branch is managed by nf-core tools; you **MUST NOT** switch or write to it. Directly writing to `main` is also forbidden, and all changes to that branch must be made through a pull request.
-
-Always create a new branch with a meaningful name for each feature, whether you are working directly in the nf-core repository (origin `nf-core/{pipeline}`) or on a fork (`{username}/{pipeline}`), then open a pull request to `dev`. You **MUST NOT** commit feature work directly to `dev`, even on a fork.
-
-If you work on multiple features in parallel, you **SHOULD** use a separate worktree for each task to prevent clobber.
+This repository has at least 3 git branches: `main` (or `master`), `dev`, and `TEMPLATE`.
+- You **MUST NOT** switch or write to the TEMPLATE branch.
+- You **MUST NOT** write any code to `main`; use a pull request instead.
+- Always create a new branch with a meaningful name for each feature, then open a pull request to `dev`.
+- You **MUST NOT** commit feature work directly to `dev`, even on a fork.
+- If you work on multiple features in parallel, you **SHOULD** use a separate worktree for each task to prevent clobber.
 
 ## Commit rules and routine
-Each commit **SHOULD** contain one logical change. There is no limit on the number of files in a commit. The commit title **SHOULD** be concise and written in imperative mood. If the commit consists only of installing or updating an nf-core module or subworkflow, limit the commit title to `Install/update nf-core module/subworkflow {name}`.
-
-Before each commit, you **MUST** stage changes and then run `prek`. Resolve all errors and all possible warnings. Repeat until there are no solvable outstanding issues.
+- Each commit **SHOULD** contain one logical change.
+- Commit title **SHOULD** be concise and written in imperative mood.
+- If the commit consists only of installing or updating an nf-core module or subworkflow, limit the commit title to `Install/update nf-core module/subworkflow {name}`.
+- Before each commit, you **MUST** stage changes and then run `prek`. Resolve all errors and all possible warnings. Repeat until there are no solvable outstanding issues.
 
 ## Push routine
-You should only push to GitHub after implementing some meaningful changes and if the code is working.
-
-Before pushing, you **MUST** run `nf-core pipelines lint`, resolve all errors and all possible warnings. Repeat until there are no solvable outstanding issues. If you are preparing a release (PR to main), use `nf-core pipelines lint --release` instead.
-
-You **MUST** also run `nf-test test tests/`. If the pipeline fails, resolve the underlying issues. If the test fails due to mismatching snapshots, update them if permitted (see "nf-test and testing" above). Otherwise, fix the issue that caused the unexpected change.
-
-If you know the code will cause issues or you intend to push more changes, you **SHOULD** add `[skip ci]` at the end of the commit title. You **SHOULD** omit this tag for final review-ready commits.
+- You should only push to GitHub after implementing some meaningful changes and if the code is working.
+- Before pushing, you **MUST** run `nf-core pipelines lint`, resolve all errors and all possible warnings. Repeat until there are no solvable outstanding issues.
+- If you are preparing a release (PR to main), use `nf-core pipelines lint --release` instead.
+- You **MUST** also run `nf-test test tests/`. If the pipeline fails, resolve the underlying issues. If the test fails due to mismatching snapshots, update them if permitted (see "nf-test and testing" above). Otherwise, fix the issue that caused the unexpected change.
+- If you know the code will cause issues or you intend to push more changes, you **SHOULD** add `[skip ci]` at the end of the commit title. You **SHOULD** omit this tag for final review-ready commits.
 
 ## PR procedure
-A PR **SHOULD** contain a single feature. The PR **MUST** use and follow the nf-core PR template, including the checklist. The PR message **SHOULD** start with a brief explanation of the changes made and the motivation.
-
-Each PR requires reviews: 1 for dev, 2 for main. Advise the user to ask for reviews in the nf-core Slack, in `#request-review` (for dev PRs) or `#release-review-trading` (for main PRs). All CI checks must pass before the PR can be merged.
-
+- A PR **SHOULD** contain a single feature. 
+- The PR **MUST** use and follow the nf-core PR template, including the checklist.
+- The PR message **SHOULD** start with a brief explanation of the changes made and the motivation.
+- Each PR requires reviews (1 for dev, 2 for main) and passing CI before merging.
+- A human can request PR reviews on Slack.
+ 
 ## Agent self-disclosure
-If you generated a majority of the code in a commit, you **MUST** add "This commit was generated by {your name}" at the end of the commit message body. If you open a PR autonomously, you **MUST** add "This pull request was created by {your name}" at the end of the PR message (above the checklist).
+- If you generated a majority of the code in a commit, you **MUST** add "Generated by {your name}" at the end of the commit message body.
+- If you open a PR autonomously, you **MUST** add "Generated by {your name}" at the end of the PR message (above the checklist).
 
 ## References
 - Nextflow documentation: https://docs.seqera.io/nextflow
