@@ -4,6 +4,7 @@ This is the main AI context file for nf-core pipelines. All AI agents and coding
 
 ## Natural language
 All comments and documentation **MUST** be written in English with British spelling. Documentation files **SHOULD** additionally follow the style guide at https://nf-co.re/docs/developing/documentation/style-guide.
+Never use emdashes in prose text, be succinct and to the point. Avoid telltale LLM phrasing such as "Not X, but Y", and excessive use of bold formatting.
 
 ## Nextflow pitfalls
 - Nextflow supports 2 ways to publish files to the output directory: workflow outputs (modern) and `publishDir` configuration directives in modules.config (legacy). You **SHOULD** publish output consistently with the existing code.
@@ -95,7 +96,7 @@ Several files have been skipped from the treemap. If a file is not in the treema
 - Use `ext.prefix` to customize the name of the output files. To include runtime variables in those arguments, use Groovy-style closures, for example: `ext.prefix = { "${meta.id}_filtered" }`, usually through the modules.config file.
 
 ## Subworkflows
-- You **SHOULD** nf-core subworkflows that are relevant to the pipeline tasks.
+- You **SHOULD** use nf-core subworkflows that are relevant to the pipeline tasks.
 - If none is applicable, create a local subworkflow when it thematically makes sense.
 
 ## Pipeline structure
@@ -172,4 +173,3 @@ This repository has at least 3 git branches: `main` (or `master`), `dev`, and `T
 - nf-core tools documentation: https://nf-co.re/docs/nf-core-tools/
 - nf-test documentation: https://www.nf-test.com/docs/getting-started/
 
-This is the end of the nf-core guidance.
