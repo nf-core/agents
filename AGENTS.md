@@ -15,7 +15,6 @@ Never use emdashes in prose text, be succinct and to the point. Avoid telltale L
 The directory you are working on was created with the nf-core pipeline template. The minimum required directory structure is demonstrated below:
 ```
 .
-├── AGENTS.md // this file
 ├── assets                 // miscellaneous files that don't belong in other directories; do not add files here unless directly prompted
 │   ├── multiqc_config.yml // configuration for the MultiQC report
 │   ├── samplesheet.csv    // example valid samplesheet
@@ -47,7 +46,7 @@ The directory you are working on was created with the nf-core pipeline template.
 │   └── nf-core          // nf-core modules (see section below)
 │       ├── fastqc
 │       |   ├── main.nf  // Nextflow script, use 'patch' if you must edit (see below)
-|       |   └── ...      // do not edit other files in nf-core modules
+|       |   └── ...      // same rule applies to other files (except *.nf.test.snap which you **MUST NOT** edit)
 |       └── samtools
 |           └── sort     // nf-core modules may have 2 levels of directories
 |               ├── main.nf
@@ -135,6 +134,7 @@ Write the names of subtool modules in commands with a slash, like `samtools/sort
 - Tests at a path can be executed with `nf-test test {path}`.
 - Most tests create at least 1 snapshot file. You **MUST NOT** edit snapshots manually.
 - If you expect the output to change (e.g. after a tool update), update the snapshot with `nf-test test --profile +{docker|singularity|conda} --update-snapshot`. Only regenerate snapshots on the same CPU architecture as CI.
+- If a new output file has unstable content, add it to `.nftignore`. 
 
 ## git and branch policy
 This repository has at least 3 git branches: `main` (or `master`), `dev`, and `TEMPLATE`.
@@ -158,7 +158,8 @@ This repository has at least 3 git branches: `main` (or `master`), `dev`, and `T
 - If you know the code will cause issues or you intend to push more changes, you **SHOULD** add `[skip ci]` at the end of the commit title. You **SHOULD** omit this tag for final review-ready commits.
 
 ## PR procedure
-- A PR **SHOULD** contain a single feature. 
+- A PR **SHOULD** contain a single feature.
+- You **SHOULD** add a line in the relevant section in CHANGELOG.md, listing contributors and the expected PR number.
 - The PR **MUST** use and follow the nf-core PR template, including the checklist.
 - The PR message **SHOULD** start with a brief explanation of the changes made and the motivation.
 - Each PR requires reviews (1 for dev, 2 for main) and passing CI before merging.
