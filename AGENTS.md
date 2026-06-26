@@ -19,12 +19,12 @@ The directory you are working on was created with the nf-core pipeline template.
 ├── assets                 // miscellaneous files that don't belong in other directories; do not add files here unless directly prompted
 │   ├── multiqc_config.yml // configuration for the MultiQC report
 │   ├── samplesheet.csv    // example valid samplesheet
-│   └── schema_input.json  // JSON schema describing the samplesheet format
+│   └── schema_{param-name}.json  // JSON schema describing the format for a given parameter
 ├── bin           // scripts for local modules
 |   ├── script.py // all scripts must start with a shebang, carry a licence/author header, and be executable
 |   └── other_script.R
 ├── CHANGELOG.md // changelog, should be updated after every substantial change
-├── CITATIONS.md // list of tool citations, updated with nf-core tools
+├── CITATIONS.md // list of tool citations, updated with nf-core tools CLI only
 ├── conf                        // directory containing Nextflow configurations for the pipeline
 │   ├── base.config             // config file with default nf-core settings, do not edit
 │   ├── modules.config          // config file with settings for all modules
@@ -46,7 +46,7 @@ The directory you are working on was created with the nf-core pipeline template.
 |   |       └── meta.yml // YAML files with module description
 │   └── nf-core          // nf-core modules (see section below)
 │       ├── fastqc
-│       |   ├── main.nf  // Nextflow script, may be edited if necessary
+│       |   ├── main.nf  // Nextflow script, use 'patch' if you must edit (see below)
 |       |   └── ...      // do not edit other files in nf-core modules
 |       └── samtools
 |           └── sort     // nf-core modules may have 2 levels of directories
@@ -75,16 +75,16 @@ The directory you are working on was created with the nf-core pipeline template.
 │   └── other.nf.test.snap   // every test must have a snapshot
 ├── tower.yml   // Files to display in Seqera Platform once the pipeline is done running
 └── workflows   // do not add files 
-    └── demo.nf // Nextflow file containing main pipeline logic
+    └── {pipeline-name}.nf // Nextflow file containing main pipeline logic
 ```
 
 Several files have been skipped from the treemap. If a file is not in the treemap, you **SHOULD NOT** edit it unless explicitly prompted.
 
 ## Key nf-core terms
-- **Module**: a single process that achieves a single, well defined task (e.g. aligning reads to a genome)
-- **Subworkflow**: a sequence of chained modules that achieve a specific objective (e.g. FASTQ cleanup and quality check)
-- **Workflow**: a complete sequence of modules and subworkflows that performs a specific analysis (e.g. bulk RNA-seq analysis)
-- **Pipeline**: a complete, executable Nextflow project that defines workflow logic, input handling, and output publishing
+- Module: a single process that achieves a single, well defined task (e.g. aligning reads to a genome)
+- Subworkflow: a sequence of chained modules that achieve a specific objective (e.g. FASTQ cleanup and quality check)
+- Workflow: a complete sequence of modules and subworkflows that performs a specific analysis (e.g. bulk RNA-seq analysis)
+- Pipeline: a complete, executable Nextflow project that defines workflow logic, input handling, and output publishing
 
 ## Modules
 - You **SHOULD** use nf-core modules to implement existing tools.
