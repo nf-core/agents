@@ -88,7 +88,7 @@ Pipelines may contain minor deviations from this general structure, e.g. additio
 ## Modules
 - You **SHOULD** use existing nf-core modules for the tools you need, where available.
 - You can find available modules and install modules with nf-core tools (see "nf-core tools" section below).
-- You **SHOULD NOT** edit nf-core modules in the pipeline repository. You **MAY** edit their `main.nf` if necessary. If you do it, you **MUST** run `nf-core modules patch {name}` afterwards.
+- You **SHOULD NOT** edit nf-core modules in the pipeline modules directory. If unavoidable, you **MAY** edit their `main.nf` if necessary, and if target pipeline logic cannot be achieved with the existing module code. If you do it, you **MUST** run `nf-core modules patch {name}` afterwards, and flag that a PR will be needed to upstream the change.
 - The pipeline has a local modules directory. If a script is only useful within this pipeline, you **MAY** create a local module for it.
 - Use nf-core tools (see below) to create local module boilerplate and then edit the files.
 - Use `ext.args` to pass any command-line arguments (except input files) to the underlying tool.
