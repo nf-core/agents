@@ -4,7 +4,7 @@ This repository is a flat collection of [Agent Skills](https://agentskills.io/sp
 
 ## Layout
 
-```text
+```tree
 .
 ├── AGENTS.md                    # entry point for agents (table of contents)
 ├── README.md                    # entry point for humans
