@@ -86,7 +86,7 @@ The directory you are working on was created with the nf-core pipeline template.
 Pipelines may contain minor deviations from this general structure, e.g. additional/skipped configs. Several files have been skipped from the treemap. If a file is not in the treemap, you **SHOULD NOT** edit it unless explicitly prompted.
 
 ## Modules
-- You **SHOULD** use nf-core modules to implement existing tools.
+- You **SHOULD** use existing nf-core modules for the tools you need, where available.
 - You can find available modules and install modules with nf-core tools (see "nf-core tools" section below).
 - You **SHOULD NOT** edit nf-core modules in the pipeline repository. You **MAY** edit their `main.nf` if necessary. If you do it, you **MUST** run `nf-core modules patch {name}` afterwards.
 - The pipeline has a local modules directory. If a script is only useful within this pipeline, you **MAY** create a local module for it.
