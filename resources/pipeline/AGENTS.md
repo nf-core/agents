@@ -109,7 +109,7 @@ The following configuration files exist by default:
 - base.config: contains default resource allocation for modules; it is defined by nf-core and you **MUST NOT** edit it
 - igenomes.config (optional): contains paths to common reference genomes in a custom AWS S3 bucket; you **MUST NOT** edit it
 - igenomes_ignored.config (optional): contains replacement settings when iGenomes is not used; you **MUST NOT** edit it
-- modules.config: contains settings for all modules; it **MUST** contain a single `process` block with multiple `withName` selectors; this is where you set `ext.args` (extra command-line arguments) and `ext.prefix` (output file naming) per module; edit as required
+- modules.config: contains settings for all modules; if present, it **MUST** contain a single `process` block with multiple `withName` selectors; this is where you set `ext.args` (extra command-line arguments) and `ext.prefix` (output file naming) per module; edit as required
 - test.config: contains parameters and settings for a minimal end-to-end test; this test **SHOULD** take a few minutes and only test the basic functionality with minimal input
 - test_full.config: contains parameters and settings for a complete self-test; this test **SHOULD** use input and parameters that trigger all pipeline functionality
 
@@ -119,7 +119,7 @@ The meta map is a Nextflow map passed along with each file that contains sample-
 - The meta map **MUST** contain an `id` field with a unique identifier.
 - nf-core modules and subworkflows may **only** access `id` and `single_end` fields.
 - Local modules, subworkflows, and workflows may create and access any meta fields that are useful for the pipeline.
-- Channel operations **MUST** preserve the meta map when present.
+- Channel operations **MUST** preserve the meta map when present; they **MAY** add, remove, or modify specific keys as required.
 
 ## nf-core tools
 nf-core provides a CLI toolkit for working with the nf-core template. The core command is `nf-core`. You **SHOULD** always use the tools instead of creating files manually.
