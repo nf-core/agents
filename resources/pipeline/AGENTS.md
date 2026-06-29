@@ -105,13 +105,10 @@ An nf-core pipeline contains 3 main parts called by the root `workflow` block in
 - completion workflow (defined in `subworkflows/local/utils_nfcore_{name}_pipeline/main.nf`): handles sending completion notifications
 
 ## Configuration files
-The following configuration files exist by default:
-- base.config: contains default resource allocation for modules; it is defined by nf-core and you **MUST NOT** edit it
-- igenomes.config (optional): contains paths to common reference genomes in a custom AWS S3 bucket; you **MUST NOT** edit it
-- igenomes_ignored.config (optional): contains replacement settings when iGenomes is not used; you **MUST NOT** edit it
-- modules.config: contains settings for all modules; if present, it **MUST** contain a single `process` block with multiple `withName` selectors; this is where you set `ext.args` (extra command-line arguments) and `ext.prefix` (output file naming) per module; edit as required
-- test.config: contains parameters and settings for a minimal end-to-end test; this test **SHOULD** take a few minutes and only test the basic functionality with minimal input
-- test_full.config: contains parameters and settings for a complete self-test; this test **SHOULD** use input and parameters that trigger all pipeline functionality
+- You **MUST NOT** edit `base.config`, `igenomes.config`, and `igenomes_ignored.config`
+- Set `ext.args` and `ext.prefix` for modules in `modules.config`, using `withName` blocks
+- The test in `test.config` **SHOULD** take a few minutes and only test the basic functionality with minimal input
+- The test in `test_full.config` **SHOULD** use input and parameters that trigger all pipeline functionality
 
 ## Meta map
 The meta map is a Nextflow map passed along with each file that contains sample-specific information. The map is created during input processing and passed through modules.
