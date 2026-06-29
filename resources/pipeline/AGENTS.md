@@ -18,72 +18,28 @@ Never use emdashes in prose text, be succinct and to the point. Avoid telltale L
 - Certain very old pipelines might be using Nextflow DSL1 syntax (with the entire workflow in a single file and channel from/to keywords). This syntax is now deprecated. You **MUST NOT** attempt to work on those pipelines.
 
 ## nf-core template structure
-The directory you are working on was created with the nf-core pipeline template. The minimum required directory structure is demonstrated below:
+The directory you are working on was created with the nf-core pipeline template. Key features of the template are demonstrated below:
 ```
 .
-├── assets                 // miscellaneous files that don't belong in other directories; do not add files here unless directly prompted
-│   ├── multiqc_config.yml // configuration for the MultiQC report
-│   ├── samplesheet.csv    // example valid samplesheet
-│   └── schema_{param-name}.json  // JSON schema describing the format for a given parameter
-├── bin           // scripts for local modules
-|   ├── script.py // all scripts must start with a shebang, carry a licence/author header, and be executable
-|   └── other_script.R
-├── CHANGELOG.md // changelog, should be updated after every substantial change
-├── CITATIONS.md // list of tool citations, updated with nf-core tools CLI only
-├── conf                        // directory containing Nextflow configurations for the pipeline
-│   ├── base.config             // config file with default nf-core settings, do not edit
-│   ├── modules.config          // config file with settings for all modules
-│   ├── test.config             // config file with settings and parameters for a quick self-test
-│   └── test_full.config        // config file with settings and parameters for a complete self-test
-├── docs                // documentation in Markdown format, do not add files unless prompted
-│   ├── CONTRIBUTING.md // contributing rules, follow and do not edit
-│   ├── images          // images used in documentation files
-│   │   └── ...
-│   ├── output.md       // document describing pipeline outputs, edit if the outputs change
-│   ├── README.md       // dummy file for GitHub, do not edit 
-│   └── usage.md        // document describing usage scenarios of the pipeline
-├── LICENSE // do not edit
-├── main.nf // core Nextflow script, may need editing if input structure changes
-├── modules // Nextflow DSL2 modules
-│   ├── local            // local modules (see section below)
-|   |   └── mymodule     // each module must be in a separate directory 
-|   |       ├── main.nf  // file with Nextflow code
-|   |       └── meta.yml // YAML files with module description
-│   └── nf-core          // nf-core modules (see section below)
-│       ├── fastqc
-│       |   ├── main.nf  // Nextflow script, use 'patch' if you must edit (see below)
-|       |   └── ...      // same rule applies to other files (except *.nf.test.snap which you **MUST NOT** edit)
-|       └── samtools
-|           └── sort     // nf-core modules may have 2 levels of directories
-|               ├── main.nf
-|               └── ...
-├── modules.json           // list of nf-core modules, do not edit
-├── nextflow.config        // main pipeline configuration, edit when parameters change
-├── nextflow_schema.json   // JSON schema with pipeline parameters
-├── nf-test.config         // nf-test configuration (see "nf-test and testing" section below)
-├── README.md              // main documentation file
-├── ro-crate-metadata.json // automatically generated, do not edit
-├── subworkflows                       // Nextflow subworkflows (see Subworkflows section below)
-│   ├── local                          // local subworkflows
-│   │   └── utils_nfcore_demo_pipeline
-│   │       └── main.nf
-│   └── nf-core                        // nf-core subworkflows
-│       ├── utils_nfcore_pipeline
-│       │   ├── main.nf
-│       │   └── ...
-│       └── ...
-├── tests                    // nf-test end-to-end tests for the pipeline
-│   ├── default.nf.test      // main test script, must exist
-│   ├── default.nf.test.snap // test output snapshot, do not edit
-│   ├── nextflow.config      // configuration used in tests only
-|   ├── other.nf.test        // other tests might exist if the pipeline has multiple modes
-│   └── other.nf.test.snap   // every test must have a snapshot
-├── tower.yml   // Files to display in Seqera Platform once the pipeline is done running
-└── workflows   // do not add files 
+
+├── conf                   // directory containing Nextflow configurations for the pipeline (see "Configuration files" below)
+├── main.nf                // core Nextflow script, may need editing if input structure changes
+├── modules                // Nextflow DSL2 modules
+│   ├── local              // local modules (see "Modules" below)
+|   |   └── mymodule       // each module must be in a separate directory 
+│   └── nf-core            // nf-core modules (see "Modules" below)
+├── nextflow_schema.json   // JSON schema describing pipeline parameters
+├── subworkflows           // Nextflow subworkflows (see "Subworkflows" below)
+│   ├── local              // local subworkflows
+|   |   └── myswf          // each subworkflow must be in a separate directory 
+│   └── nf-core            // nf-core subworkflows
+├── tests                  // nf-test end-to-end tests for the pipeline
+│   └── default.nf.test    // main test script, must exist
+└── workflows              // do not add files 
     └── {pipeline-name}.nf // Nextflow file containing main pipeline logic
 ```
 
-Pipelines may contain minor deviations from this general structure, e.g. additional/skipped configs. Several files have been skipped from the treemap. If a file is not in the treemap, you **SHOULD NOT** edit it unless explicitly prompted.
+The pipeline also contains other files and directories. If a file does not follow the treemap above, you **MUST** verify with the user before editing it.
 
 ## Modules
 - You **SHOULD** use existing nf-core modules for the tools you need, where available.
