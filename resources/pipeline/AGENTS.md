@@ -83,7 +83,7 @@ The directory you are working on was created with the nf-core pipeline template.
     └── {pipeline-name}.nf // Nextflow file containing main pipeline logic
 ```
 
-Several files have been skipped from the treemap. If a file is not in the treemap, you **SHOULD NOT** edit it unless explicitly prompted.
+Pipelines may contain minor deviations from this general structure, e.g. additional/skipped configs. Several files have been skipped from the treemap. If a file is not in the treemap, you **SHOULD NOT** edit it unless explicitly prompted.
 
 ## Modules
 - You **SHOULD** use nf-core modules to implement existing tools.
