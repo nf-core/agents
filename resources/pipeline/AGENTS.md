@@ -4,7 +4,27 @@ This is the main AI context file for nf-core pipelines. All AI agents and coding
 
 ## Natural language
 All comments and documentation **MUST** be written in English with British spelling. Documentation files **SHOULD** additionally follow the style guide at https://nf-co.re/docs/developing/documentation/style-guide.
-Never use emdashes in prose text, be succinct and to the point. Avoid telltale LLM phrasing such as "Not X, but Y", and excessive use of bold formatting.
+
+### Prose
+Prose includes all .md files, description fields in meta files, and comments in code (also in quoted scripts). Prose DOES NOT include any code (including quoted scripts) or standardized fields in other files. In all prose:
+- Use short declarative sentences, active voice, no hedges or meta-commentary
+  ("it's worth noting," "note that," "worth mentioning"). State the fact or rule
+  directly instead of narrating that you're about to explain it.
+- Never use em-dashes, use commas or semicolons instead.
+  Avoid non-ASCII characters (e.g. arrows, fancy quotes), except diacritics in names.
+- Use bold and italic formatting sparingly. Avoid bold text in bullet lists.
+- Avoid contrasts, metaphors, rhetorical questions, and punchy sentences.
+  Avoid enumerations. If multiple items need to be listed, use a bullet list.
+  Never repeat a sentence structure multiple times in a row.
+- Never "correct" established terminology. A tool's actual name, a CLI flag,
+  a package name, or a field's standard term is not a prose style choice - leave
+  it exactly as the ecosystem spells it, even inside otherwise-edited prose.
+- Don't write "as shown below" or "we'll cover this later" - state the fact where
+  it's needed, or reorder so the explanation comes first. A comment or doc section
+  should make sense read in isolation.
+- Scope to the immediate task, not the whole topic. A code comment supports
+  the one line/block it sits above; a README section supports the reader doing
+  the thing that section is under.
 
 ## Key nf-core terms
 - Module: a single process that achieves a single, well defined task (e.g. aligning reads to a genome)
@@ -99,12 +119,18 @@ This repository has at least 3 git branches: `main` (or `master`), `dev`, and `T
 
 ## Commit rules and routine
 - Each commit **SHOULD** contain one logical change.
+    - A commit **MAY** contain changes in multiple lines and files, as long as they have a shared purpose.
 - Commit title **SHOULD** be concise and written in imperative mood.
 - If the commit consists only of installing or updating an nf-core module or subworkflow, limit the commit title to `Install/update nf-core module/subworkflow {name}`.
+- If you have edited any Nextflow files, run `nextflow lint -format` for each. If any errors appear, resolve them and re-run the command.
 - Before each commit, you **MUST** stage changes and then run `prek`. Resolve all errors and all possible warnings. Repeat until there are no solvable outstanding issues.
 
 ## Push routine
 - You should only push to GitHub after implementing some meaningful changes and if the code is working.
+- You **MUST** obtain permission from the user before pushing.
+- You **MUST NOT** force-push.
+    - You **MAY** use `--force-with-lease` **ONLY** if you have rewritten commit history.
+    - If a push is rejected by the remote, notify the user and wait.
 - Before pushing, you **MUST** run `nf-core pipelines lint`, resolve all errors and all possible warnings. Repeat until there are no solvable outstanding issues.
 - If you are preparing a release (PR to main), use `nf-core pipelines lint --release` instead.
 - You **MUST** also run `nf-test test tests/`. If the pipeline fails, resolve the underlying issues. If the test fails due to mismatching snapshots, update them if permitted (see "nf-test and testing" above). Otherwise, fix the issue that caused the unexpected change.
