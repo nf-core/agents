@@ -11,10 +11,14 @@
 [![Watch on YouTube](http://img.shields.io/badge/youtube-nf--core-FF0000?labelColor=000000&logo=youtube)](https://www.youtube.com/c/nf-core)
 
 ## About
-This repository contains the official AI agent context files for developing nf-core pipelines. The repository aims to enable swift updates as the field evolves and the community discovers specific agent behaviour.
+
+This repository contains the official AI agent context files for developing nf-core pipelines and plugins. The repository aims to enable swift updates as the field evolves and the community discovers specific agent behaviour.
 
 ## Repository rules
+
 Adding or editing files in this repository requires approval from an nf-core core member (or maintainer with special permissions) and can only be done via pull requests.
 
 ## Files in this repository
-- `AGENTS.md`: main agent context file containing instructions for the nf-core pipeline template.
+
+- `resources/pipeline/AGENTS.md`: agent context file containing instructions for nf-core pipeline repositories.
+- `resources/plugin/AGENTS.md`: agent context file containing instructions for nf-core plugin repositories.
