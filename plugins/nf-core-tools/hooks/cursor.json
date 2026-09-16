@@ -1,0 +1,19 @@
+{
+  "hooks": {
+    "afterFileEdit": [
+      {
+        "command": "./scripts/agent_hooks/run_phase.py after-file-edit --provider cursor"
+      }
+    ],
+    "sessionEnd": [
+      {
+        "command": "./scripts/agent_hooks/run_phase.py stop --provider cursor"
+      }
+    ],
+    "stop": [
+      {
+        "command": "./scripts/agent_hooks/run_phase.py stop --provider cursor"
+      }
+    ]
+  }
+}
