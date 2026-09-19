@@ -6,7 +6,7 @@ This is the main AI context file for nf-core pipelines. All AI agents and coding
 All comments and documentation **MUST** be written in English with British spelling. Documentation files **SHOULD** additionally follow the style guide at https://nf-co.re/docs/developing/documentation/style-guide.
 
 ### Prose
-Prose includes all .md files, description fields in meta files, and comments in code (also in quoted scripts). Prose DOES NOT include any code (including quoted scripts) or standardized fields in other files. In all prose:
+Prose includes all .md files, description fields in meta files, and comments in code (also in quoted scripts). Prose DOES NOT include any code (including quoted scripts) or standardised fields in other files. In all prose:
 - Use short declarative sentences, active voice, no hedges or meta-commentary
   ("it's worth noting," "note that," "worth mentioning"). State the fact or rule
   directly instead of narrating that you're about to explain it.
@@ -68,7 +68,7 @@ The pipeline also contains other files and directories. If a file does not follo
 - The pipeline has a local modules directory. If a script is only useful within this pipeline, you **MAY** create a local module for it.
 - Use nf-core tools (see below) to create local module boilerplate and then edit the files.
 - Use `ext.args` to pass any command-line arguments (except input files) to the underlying tool.
-- Use `ext.prefix` to customize the name of the output files. To include runtime variables in those arguments, use Groovy-style closures, for example: `ext.prefix = { "${meta.id}_filtered" }`, usually through the modules.config file.
+- Use `ext.prefix` to customise the name of the output files. To include runtime variables in those arguments, use Groovy-style closures, for example: `ext.prefix = { "${meta.id}_filtered" }`, usually through the modules.config file.
 
 ## Subworkflows
 - You **SHOULD** use nf-core subworkflows that are relevant to the pipeline tasks.
