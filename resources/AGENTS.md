@@ -18,6 +18,21 @@ Prose includes all .md files, description fields in meta files, and comments in 
 - Don't write "as shown below" or "we'll cover this later" - state the fact where it's needed, or reorder so the explanation comes first. A comment or doc section should make sense read in isolation.
 - Scope to the immediate task, not the whole topic. A code comment supports the one line/block it sits above; a README section supports the reader doing the thing that section is under.
 
+## Code Comments
+
+Code exists to show _how_; comments carry _why_ — a non-obvious constraint, deliberate deviation, gotcha, or workaround. Apply this discipline across all projects:
+
+- Default to no comment. Write comments only when code alone cannot convey the reasoning.
+- Never narrate the code ("loop over users", "parse the body") or restate names, types, or signatures.
+- Never narrate the change ("fixed X", "updated to Y", "as requested"). A comment must read correctly to someone seeing the file fresh; change context belongs in the commit message.
+- Delete by default. A comment restating a decision the code already reflects is dead weight. Keep inline only what readers need _at that line_ and cannot get from the code — a non-obvious invariant/constraint or a cross-file sync obligation.
+- Comments must stand on their own with any link removed. Encode the substance; never use a pointer as a substitute. Avoid point-in-time artifacts (specs, section numbers, design docs) that rot over time. Fine: a maintained doc/README at a stable path as breadcrumb context.
+- Apply Occam's razor to every comment you keep. A genuine _why_ can still be 3x too long. Keep only the one non-obvious fact a reader needs _at that line_, in the fewest words. Cut the mechanism the code shows, downstream consequences, and justification-of-the-justification.
+- A one-line summary on a public function/endpoint is fine; inline restatement of a single clear line never is.
+- TODOs are fine and do not need issue IDs, but a TODO is a marker, not a substitute for doing the work in scope.
+
+See project-specific AGENTS.md files for language-specific comment guidance (e.g. Javadoc, Groovydoc, Nextflow comments).
+
 ## git and branch policy
 
 - You **MUST NOT** write any code to `main`; use a pull request instead.
