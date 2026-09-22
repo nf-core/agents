@@ -79,8 +79,19 @@ jobs:
                   # (Project files may have additional project-specific content after)
                   if shared_text not in project_text:
                       if section not in mismatches:
-                          mismatches[section] = []
-                      mismatches[section].append(project)
+                          mismatches[section] = {}
+                      
+                      # Create diff
+                      import difflib
+                      diff_lines = list(difflib.unified_diff(
+                          shared_text.split('\n'),
+                          project_text.split('\n'),
+                          fromfile=f'resources/AGENTS.md',
+                          tofile=f'resources/{project}/AGENTS.md',
+                          lineterm=''
+                      ))
+                      mismatches[section][project] = '\n'.join(diff_lines)
+                      
                       errors.append(
                           f"Section '{section}' in resources/{project}/AGENTS.md missing key shared content from resources/AGENTS.md"
                       )
@@ -113,13 +124,17 @@ jobs:
               mismatches = {};
             }
 
-            // Build detailed error message
             let detailedErrors = '';
             for (const [section, projects] of Object.entries(mismatches)) {
-              detailedErrors += `- **${section}**: out of sync in ${projects.join(', ')}\n`;
+              detailedErrors += `- **${section}**: out of sync\n`;
+              for (const [project, diff] of Object.entries(projects)) {
+                if (diff) {
+                  detailedErrors += '\n```diff\n' + diff + '\n```\n';
+                }
+              }
             }
 
-            const body = `⚠️ **AGENTS.md files are out of sync**\n\nThe following shared sections have mismatches:\n\n${detailedErrors || '- Unable to determine specific sections'}\nThese shared sections must be kept synchronized across:\n- resources/AGENTS.md (source of truth)\n- resources/pipeline/AGENTS.md\n- resources/plugin/AGENTS.md\n\nProject files may have additional project-specific content in subsections (e.g., "### For pipelines specifically"), but the universal/shared parts must match exactly.\n\n**To fix:** Update the out-of-sync sections in the affected project file(s) to match the corresponding section in resources/AGENTS.md exactly.`;
+            const body = `⚠️ **AGENTS.md files are out of sync**\n\n${detailedErrors || '- Unable to determine specific sections'}\nThese shared sections must be kept synchronized across:\n- resources/AGENTS.md (source of truth)\n- resources/pipeline/AGENTS.md\n- resources/plugin/AGENTS.md\n\nProject files may have additional project-specific content in subsections (e.g., "### For pipelines specifically"), but the universal/shared parts must match exactly.\n\n**To fix:** Update the out-of-sync sections in the affected project file(s) to match the corresponding section in resources/AGENTS.md exactly.`;
 
             github.rest.issues.createComment({
               issue_number: context.issue.number,
