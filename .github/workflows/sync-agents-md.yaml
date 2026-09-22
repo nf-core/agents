@@ -80,7 +80,7 @@ jobs:
                   if shared_text not in project_text:
                       if section not in mismatches:
                           mismatches[section] = {}
-                      
+
                       # Create diff
                       import difflib
                       diff_lines = list(difflib.unified_diff(
@@ -91,7 +91,7 @@ jobs:
                           lineterm=''
                       ))
                       mismatches[section][project] = '\n'.join(diff_lines)
-                      
+
                       errors.append(
                           f"Section '{section}' in resources/{project}/AGENTS.md missing key shared content from resources/AGENTS.md"
                       )
