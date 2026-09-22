@@ -18,6 +18,7 @@ jobs:
           python3 << 'PYTHON'
           import re
           import sys
+          import json
 
           with open('resources/AGENTS.md', 'r') as f:
               shared_content = f.read()
@@ -36,6 +37,7 @@ jobs:
           ]
 
           errors = []
+          mismatches = {}  # Track which sections mismatch in which files
 
           # Extract universal (shared) parts from resources/AGENTS.md
           # These are the parts before any project-specific additions
@@ -76,9 +78,16 @@ jobs:
                   # Check if the shared/universal text is present in the project file
                   # (Project files may have additional project-specific content after)
                   if shared_text not in project_text:
+                      if section not in mismatches:
+                          mismatches[section] = []
+                      mismatches[section].append(project)
                       errors.append(
                           f"Section '{section}' in resources/{project}/AGENTS.md missing key shared content from resources/AGENTS.md"
                       )
+
+          # Save mismatches for the comment step
+          with open('/tmp/sync_mismatches.json', 'w') as f:
+              json.dump(mismatches, f)
 
           if errors:
               print("❌ AGENTS.md files are out of sync:\n")
@@ -95,9 +104,26 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
+            const fs = require('fs');
+            let mismatches = {};
+            try {
+              const data = fs.readFileSync('/tmp/sync_mismatches.json', 'utf8');
+              mismatches = JSON.parse(data);
+            } catch (e) {
+              mismatches = {};
+            }
+
+            // Build detailed error message
+            let detailedErrors = '';
+            for (const [section, projects] of Object.entries(mismatches)) {
+              detailedErrors += `- **${section}**: out of sync in ${projects.join(', ')}\n`;
+            }
+
+            const body = `⚠️ **AGENTS.md files are out of sync**\n\nThe following shared sections have mismatches:\n\n${detailedErrors || '- Unable to determine specific sections'}\nThese shared sections must be kept synchronized across:\n- resources/AGENTS.md (source of truth)\n- resources/pipeline/AGENTS.md\n- resources/plugin/AGENTS.md\n\nProject files may have additional project-specific content in subsections (e.g., "### For pipelines specifically"), but the universal/shared parts must match exactly.\n\n**To fix:** Update the out-of-sync sections in the affected project file(s) to match the corresponding section in resources/AGENTS.md exactly.`;
+
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '⚠️ **AGENTS.md files are out of sync**\n\nThe following shared sections must be kept synchronized across resources/AGENTS.md, resources/pipeline/AGENTS.md, and resources/plugin/AGENTS.md:\n\n- Natural language\n- Code Comments\n- git and branch policy\n- Commit rules and routine\n- Push routine\n- PR procedure\n- Agent self-disclosure\n- nf-test and testing\n- References\n\nProject files may have additional project-specific content after these sections, but the universal/shared parts must be kept identical to resources/AGENTS.md.\n\nTo fix: Copy the universal content from the matching section in resources/AGENTS.md, then add any project-specific guidance after.'
+              body: body
             })
