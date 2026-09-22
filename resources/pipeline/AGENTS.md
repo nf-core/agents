@@ -8,7 +8,7 @@ All comments and documentation **MUST** be written in English with British spell
 
 ### Prose
 
-Prose includes all .md files, description fields in meta files, and comments in code (also in quoted scripts). Prose DOES NOT include any code (including quoted scripts) or standardised fields in other files. In all prose here:
+Prose includes all .md files, description fields in meta files, and comments in code (also in quoted scripts). Prose DOES NOT include any code (including quoted scripts) or standardised fields in other files. In all prose:
 
 - Use short declarative sentences, active voice, no hedges or meta-commentary ("it's worth noting," "note that," "worth mentioning"). State the fact or rule directly instead of narrating that you're about to explain it.
 - Never use em-dashes, use commas or semicolons instead. Avoid non-ASCII characters (e.g. arrows, fancy quotes), except diacritics in names.
