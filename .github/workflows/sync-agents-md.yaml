@@ -3,9 +3,9 @@ name: Sync AGENTS.md files
 on:
   pull_request:
     paths:
-      - 'resources/AGENTS.md'
-      - 'resources/pipeline/AGENTS.md'
-      - 'resources/plugin/AGENTS.md'
+      - "resources/AGENTS.md"
+      - "resources/pipeline/AGENTS.md"
+      - "resources/plugin/AGENTS.md"
 
 jobs:
   check-sync:
