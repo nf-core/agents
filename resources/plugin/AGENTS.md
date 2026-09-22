@@ -77,12 +77,13 @@ If a file does not follow the layout above, you **MUST** verify with the user be
 
 ## nf-test and testing
 
+See [../AGENTS.md#nf-test-and-testing](../AGENTS.md#nf-test-and-testing) for shared testing principles.
+
+For plugins specifically:
+
 - Each function **MUST** have at least one test case.
 - nf-test plugins: tests live in `tests/` as `main.nf.test` files, one per utility function. Tests use `nextflow_process` or `nextflow_pipeline` blocks with setup/when/then sections.
 - Nextflow plugins: unit tests live in `src/test/` using the Spock framework. Integration tests live in `validation/`.
-- Most tests create at least 1 snapshot file. You **MUST NOT** edit snapshots manually.
-- If you expect the output to change, update the snapshot with the appropriate `--update-snapshot` flag. Only regenerate snapshots on the same CPU architecture as CI.
-- If a new output file has unstable content, add it to `.nftignore`.
 
 ## git and branch policy
 

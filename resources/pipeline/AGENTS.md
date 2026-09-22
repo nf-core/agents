@@ -96,12 +96,13 @@ Write the names of subtool modules in commands with a slash, like `samtools/sort
 
 ## nf-test and testing
 
+See [../AGENTS.md#nf-test-and-testing](../AGENTS.md#nf-test-and-testing) for shared testing principles.
+
+For pipelines specifically:
+
 - Each pipeline **MUST** have at least 1 test case.
 - Tests have a standardized syntax, with setup (optional), input ("when"), and assertion ("then") sections.
 - Tests at a path can be executed with `nf-test test {path}`.
-- Most tests create at least 1 snapshot file. You **MUST NOT** edit snapshots manually.
-- If you expect the output to change (e.g. after a tool update), update the snapshot with `nf-test test --profile +{docker|singularity|conda} --update-snapshot`. Only regenerate snapshots on the same CPU architecture as CI.
-- If a new output file has unstable content, add it to `.nftignore`.
 
 ## git and branch policy
 
