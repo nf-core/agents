@@ -31,7 +31,9 @@ Code exists to show _how_; comments carry _why_ — a non-obvious constraint, de
 - A one-line summary on a public function/endpoint is fine; inline restatement of a single clear line never is.
 - TODOs are fine and do not need issue IDs, but a TODO is a marker, not a substitute for doing the work in scope.
 
-For Nextflow code specifically, before committing changes, always review code comments on the diff:
+### For Nextflow code specifically
+
+Before committing changes, always review code comments on the diff:
 
 - Use inline comments to explain non-obvious Nextflow channel logic, tuple unpacking decisions, or groovy closures.
 - Document why a particular module configuration (`ext.args`, `ext.prefix`) was chosen when it deviates from convention.
@@ -123,33 +125,31 @@ Use `nf-core --help` to obtain information about nf-core commands. You can also 
 
 Write the names of subtool modules in commands with a slash, like `samtools/sort`.
 
-## nf-test and testing
-
-- Each pipeline **MUST** have at least 1 test case.
-- Tests have a standardized syntax, with setup (optional), input ("when"), and assertion ("then") sections.
-- Tests at a path can be executed with `nf-test test {path}`.
-- Most tests create at least 1 snapshot file. You **MUST NOT** edit snapshots manually.
-- If you expect the output to change (e.g. after a tool update), update the snapshot with `nf-test test --profile +{docker|singularity|conda} --update-snapshot`. Only regenerate snapshots on the same CPU architecture as CI.
-- If a new output file has unstable content, add it to `.nftignore`.
-
 ## git and branch policy
+
+- You **MUST NOT** write any code to `main`; use a pull request instead.
+- Always create a new branch with a meaningful name for each feature, then open a pull request.
+- You **MUST NOT** commit feature work directly to `main` or `dev`, even on a fork.
+- If you work on multiple features in parallel, you **SHOULD** use a separate worktree for each task to prevent clobber.
+
+### For pipelines specifically
 
 This repository has at least 3 git branches: `main` (or `master`), `dev`, and `TEMPLATE`.
 
 - You **MUST NOT** switch or write to the TEMPLATE branch.
-- You **MUST NOT** write any code to `main`; use a pull request instead.
-- Always create a new branch with a meaningful name for each feature, then open a pull request to `dev`.
-- You **MUST NOT** commit feature work directly to `dev`, even on a fork.
-- If you work on multiple features in parallel, you **SHOULD** use a separate worktree for each task to prevent clobber.
+- Always open a pull request to `dev` (not `main`).
 
 ## Commit rules and routine
 
 - Each commit **SHOULD** contain one logical change.
   - A commit **MAY** contain changes in multiple lines and files, as long as they have a shared purpose.
 - Commit title **SHOULD** be concise and written in imperative mood.
+- Before each commit, you **MUST** stage changes and then run `prek`. Resolve all errors and all possible warnings. Repeat until there are no solvable outstanding issues.
+
+### For pipelines specifically
+
 - If the commit consists only of installing or updating an nf-core module or subworkflow, limit the commit title to `Install/update nf-core module/subworkflow {name}`.
 - If you have edited any Nextflow files, run `nextflow lint -format` for each. If any errors appear, resolve them and re-run the command.
-- Before each commit, you **MUST** stage changes and then run `prek`. Resolve all errors and all possible warnings. Repeat until there are no solvable outstanding issues.
 
 ## Push routine
 
@@ -158,10 +158,14 @@ This repository has at least 3 git branches: `main` (or `master`), `dev`, and `T
 - You **MUST NOT** force-push.
   - You **MAY** use `--force-with-lease` **ONLY** if you have rewritten commit history.
   - If a push is rejected by the remote, notify the user and wait.
+- Before pushing, run the build and tests (if applicable for your project type). Resolve all errors and all possible warnings. Repeat until there are no solvable outstanding issues.
+- If you know the code will cause issues or you intend to push more changes, you **SHOULD** add `[skip ci]` at the end of the commit title. You **SHOULD** omit this tag for final review-ready commits.
+
+### For pipelines specifically
+
 - Before pushing, you **MUST** run `nf-core pipelines lint`, resolve all errors and all possible warnings. Repeat until there are no solvable outstanding issues.
 - If you are preparing a release (PR to main), use `nf-core pipelines lint --release` instead.
-- You **MUST** also run `nf-test test tests/`. If the pipeline fails, resolve the underlying issues. If the test fails due to mismatching snapshots, update them if permitted (see "nf-test and testing" above). Otherwise, fix the issue that caused the unexpected change.
-- If you know the code will cause issues or you intend to push more changes, you **SHOULD** add `[skip ci]` at the end of the commit title. You **SHOULD** omit this tag for final review-ready commits.
+- You **MUST** also run `nf-test test tests/`. If the pipeline fails, resolve the underlying issues. If the test fails due to mismatching snapshots, update them if permitted (see "nf-test and testing" below). Otherwise, fix the issue that caused the unexpected change.
 
 ## PR procedure
 
@@ -169,13 +173,31 @@ This repository has at least 3 git branches: `main` (or `master`), `dev`, and `T
 - You **SHOULD** add a line in the relevant section in CHANGELOG.md, listing contributors and the expected PR number.
 - The PR **MUST** use and follow the nf-core PR template, including the checklist.
 - The PR message **SHOULD** start with a brief explanation of the changes made and the motivation.
-- Each PR requires reviews (1 for dev, 2 for main) and passing CI before merging.
+- Each PR requires reviews and passing CI before merging.
 - A human can request PR reviews on Slack.
+
+### For pipelines specifically
+
+- Each PR requires reviews (1 for dev, 2 for main) and passing CI before merging.
 
 ## Agent self-disclosure
 
 - If you generated a majority of the code in a commit, you **MUST** add "Generated by {your name}" at the end of the commit message body.
 - If you open a PR autonomously, you **MUST** add "Generated by {your name}" at the end of the PR message (above the checklist).
+
+## nf-test and testing
+
+Most projects use snapshot testing to verify output. These shared principles apply across all project types:
+
+- Most tests create at least 1 snapshot file. You **MUST NOT** edit snapshots manually.
+- If you expect the output to change (e.g. after a tool update), update the snapshot with the appropriate `--update-snapshot` flag. Only regenerate snapshots on the same CPU architecture as CI.
+- If a new output file has unstable content, add it to `.nftignore`.
+
+### For pipelines specifically
+
+- Each pipeline **MUST** have at least 1 test case.
+- Tests have a standardized syntax, with setup (optional), input ("when"), and assertion ("then") sections.
+- Tests at a path can be executed with `nf-test test {path}`.
 
 ## References
 
