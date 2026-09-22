@@ -20,5 +20,6 @@ Adding or editing files in this repository requires approval from an nf-core cor
 
 ## Files in this repository
 
-- `resources/pipeline/AGENTS.md`: agent context file containing instructions for nf-core pipeline repositories.
-- `resources/plugin/AGENTS.md`: agent context file containing instructions for nf-core plugin repositories.
+- `resources/AGENTS.md`: shared AI agent guidelines used across all nf-core projects (pipelines, plugins, modules, web, and tools).
+- `resources/pipeline/AGENTS.md`: agent context file containing instructions for nf-core pipeline repositories. Incorporates shared guidelines from `resources/AGENTS.md`.
+- `resources/plugin/AGENTS.md`: agent context file containing instructions for nf-core plugin repositories. Incorporates shared guidelines from `resources/AGENTS.md`.

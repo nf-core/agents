@@ -2,11 +2,11 @@
 
 All AI agents and coding assistants **MUST** follow the rules in this document.
 
-This document incorporates shared guidelines from [../AGENTS_shared.md](../AGENTS_shared.md), which cover natural language, git policies, commit routines, and more. Please refer to that file for general standards.
+This document incorporates shared guidelines from [../AGENTS.md](../AGENTS.md), which cover natural language, git policies, commit routines, and more. Please refer to that file for general standards.
 
 ## Natural language
 
-See [../AGENTS_shared.md#natural-language](../AGENTS_shared.md#natural-language) for the shared natural language guidelines.
+See [../AGENTS.md#natural-language](../AGENTS.md#natural-language) for the shared natural language guidelines.
 
 ## Key terms
 
@@ -88,27 +88,27 @@ If a file does not follow the layout above, you **MUST** verify with the user be
 
 The default branch is `main`.
 
-- See [../AGENTS_shared.md#git-and-branch-policy](../AGENTS_shared.md#git-and-branch-policy) for general git guidelines.
+- See [../AGENTS.md#git-and-branch-policy](../AGENTS.md#git-and-branch-policy) for general git guidelines.
 - For plugins specifically: Always open a pull request to `main`.
 
 ## Commit rules and routine
 
-See [../AGENTS_shared.md#commit-rules-and-routine](../AGENTS_shared.md#commit-rules-and-routine) for general guidelines.
+See [../AGENTS.md#commit-rules-and-routine](../AGENTS.md#commit-rules-and-routine) for general guidelines.
 
 ## Push routine
 
-See [../AGENTS_shared.md#push-routine](../AGENTS_shared.md#push-routine) for general guidelines. For plugins specifically:
+See [../AGENTS.md#push-routine](../AGENTS.md#push-routine) for general guidelines. For plugins specifically:
 
 - Before pushing, you **MUST** run the project build and tests (see "Build and test" above), resolve all errors and all possible warnings. Repeat until there are no solvable outstanding issues.
 
 ## PR procedure
 
-See [../AGENTS_shared.md#pr-procedure](../AGENTS_shared.md#pr-procedure) for general guidelines.
+See [../AGENTS.md#pr-procedure](../AGENTS.md#pr-procedure) for general guidelines.
 
 ## Agent self-disclosure
 
-See [../AGENTS_shared.md#agent-self-disclosure](../AGENTS_shared.md#agent-self-disclosure).
+See [../AGENTS.md#agent-self-disclosure](../AGENTS.md#agent-self-disclosure).
 
 ## References
 
-See [../AGENTS_shared.md#references](../AGENTS_shared.md#references) for shared references.
+See [../AGENTS.md#references](../AGENTS.md#references) for shared references.

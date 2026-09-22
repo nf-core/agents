@@ -2,11 +2,11 @@
 
 This is the main AI context file for nf-core pipelines. All AI agents and coding assistants **MUST** follow the rules contained in this document.
 
-This document incorporates shared guidelines from [../AGENTS_shared.md](../AGENTS_shared.md), which cover natural language, git policies, commit routines, and more. Please refer to that file for general standards.
+This document incorporates shared guidelines from [../AGENTS.md](../AGENTS.md), which cover natural language, git policies, commit routines, and more. Please refer to that file for general standards.
 
 ## Natural language
 
-See [../AGENTS_shared.md#natural-language](../AGENTS_shared.md#natural-language) for the shared natural language guidelines.
+See [../AGENTS.md#natural-language](../AGENTS.md#natural-language) for the shared natural language guidelines.
 
 ## Key nf-core terms
 
@@ -25,7 +25,7 @@ See [../AGENTS_shared.md#natural-language](../AGENTS_shared.md#natural-language)
 
 The directory you are working on was created with the nf-core pipeline template. Key features of the template are demonstrated below:
 
-```
+```text
 .
 
 ├── conf                   // directory containing Nextflow configurations for the pipeline (see "Configuration files" below)
@@ -108,19 +108,19 @@ Write the names of subtool modules in commands with a slash, like `samtools/sort
 This repository has at least 3 git branches: `main` (or `master`), `dev`, and `TEMPLATE`.
 
 - You **MUST NOT** switch or write to the TEMPLATE branch.
-- See [../AGENTS_shared.md#git-and-branch-policy](../AGENTS_shared.md#git-and-branch-policy) for general git guidelines.
+- See [../AGENTS.md#git-and-branch-policy](../AGENTS.md#git-and-branch-policy) for general git guidelines.
 - For pipelines specifically: Always create a new branch with a meaningful name for each feature, then open a pull request to `dev` (not `main`).
 
 ## Commit rules and routine
 
-See [../AGENTS_shared.md#commit-rules-and-routine](../AGENTS_shared.md#commit-rules-and-routine) for general commit guidelines. For pipelines specifically:
+See [../AGENTS.md#commit-rules-and-routine](../AGENTS.md#commit-rules-and-routine) for general commit guidelines. For pipelines specifically:
 
 - If the commit consists only of installing or updating an nf-core module or subworkflow, limit the commit title to `Install/update nf-core module/subworkflow {name}`.
 - If you have edited any Nextflow files, run `nextflow lint -format` for each. If any errors appear, resolve them and re-run the command.
 
 ## Push routine
 
-See [../AGENTS_shared.md#push-routine](../AGENTS_shared.md#push-routine) for general guidelines. For pipelines specifically:
+See [../AGENTS.md#push-routine](../AGENTS.md#push-routine) for general guidelines. For pipelines specifically:
 
 - Before pushing, you **MUST** run `nf-core pipelines lint`, resolve all errors and all possible warnings. Repeat until there are no solvable outstanding issues.
 - If you are preparing a release (PR to main), use `nf-core pipelines lint --release` instead.
@@ -128,12 +128,12 @@ See [../AGENTS_shared.md#push-routine](../AGENTS_shared.md#push-routine) for gen
 
 ## PR procedure
 
-See [../AGENTS_shared.md#pr-procedure](../AGENTS_shared.md#pr-procedure) for general guidelines. For pipelines: each PR requires reviews (1 for dev, 2 for main) and passing CI before merging.
+See [../AGENTS.md#pr-procedure](../AGENTS.md#pr-procedure) for general guidelines. For pipelines: each PR requires reviews (1 for dev, 2 for main) and passing CI before merging.
 
 ## Agent self-disclosure
 
-See [../AGENTS_shared.md#agent-self-disclosure](../AGENTS_shared.md#agent-self-disclosure).
+See [../AGENTS.md#agent-self-disclosure](../AGENTS.md#agent-self-disclosure).
 
 ## References
 
-See [../AGENTS_shared.md#references](../AGENTS_shared.md#references) for shared references.
+See [../AGENTS.md#references](../AGENTS.md#references) for shared references.
