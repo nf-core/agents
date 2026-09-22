@@ -22,7 +22,7 @@ jobs:
           with open('resources/AGENTS.md', 'r') as f:
               shared_content = f.read()
 
-          # Define sections that should be identical across files
+          # Define sections that should be present across files
           shared_sections = [
               'Natural language',
               'Code Comments',
@@ -37,27 +37,32 @@ jobs:
 
           errors = []
 
+          # Extract universal (shared) parts from resources/AGENTS.md
+          # These are the parts before any project-specific additions
+          shared_sections_content = {}
+          for section in shared_sections:
+              match = re.search(
+                  r'## ' + re.escape(section) + r'\n(.*?)(?=\n## |\Z)',
+                  shared_content,
+                  re.DOTALL
+              )
+              if match:
+                  content = match.group(1).strip()
+                  # Remove the "See project-specific..." line if present
+                  content = re.sub(r'\n\nSee project-specific AGENTS\.md files.*', '', content)
+                  shared_sections_content[section] = content
+              else:
+                  errors.append(f"Section '{section}' not found in resources/AGENTS.md")
+
           # Check each project file
           for project in ['pipeline', 'plugin']:
               with open(f'resources/{project}/AGENTS.md', 'r') as f:
                   project_content = f.read()
 
-              for section in shared_sections:
-                  # Extract section from shared file
-                  shared_match = re.search(
-                      f'## {section}\n(.*?)(?=\n## |\Z)',
-                      shared_content,
-                      re.DOTALL
-                  )
-                  if not shared_match:
-                      errors.append(f"Section '{section}' missing from resources/AGENTS.md")
-                      continue
-
-                  shared_text = shared_match.group(1).strip()
-
+              for section, shared_text in shared_sections_content.items():
                   # Find section in project file
                   project_match = re.search(
-                      f'## {section}\n(.*?)(?=\n## |\Z)',
+                      r'## ' + re.escape(section) + r'\n(.*?)(?=\n## |\Z)',
                       project_content,
                       re.DOTALL
                   )
@@ -68,15 +73,11 @@ jobs:
 
                   project_text = project_match.group(1).strip()
 
-                  # For shared sections, verify exact match
-                  if shared_text != project_text:
-                      shared_lines = len(shared_text.split('\n'))
-                      project_lines = len(project_text.split('\n'))
+                  # Check if the shared/universal text is present in the project file
+                  # (Project files may have additional project-specific content after)
+                  if shared_text not in project_text:
                       errors.append(
-                          f"Section '{section}' differs between resources/AGENTS.md "
-                          f"and resources/{project}/AGENTS.md\n"
-                          f"  Shared: {shared_lines} lines\n"
-                          f"  {project}: {project_lines} lines"
+                          f"Section '{section}' in resources/{project}/AGENTS.md missing key shared content from resources/AGENTS.md"
                       )
 
           if errors:
@@ -85,7 +86,7 @@ jobs:
                   print(f"  - {error}")
               sys.exit(1)
           else:
-              print("✓ All shared sections are in sync")
+              print("✓ All shared sections are properly synchronized")
               sys.exit(0)
           PYTHON
 
@@ -98,5 +99,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '⚠️ **AGENTS.md files are out of sync**\n\nPlease ensure the following shared sections are identical across all three files:\n- Natural language\n- Code Comments\n- git and branch policy\n- Commit rules and routine\n- Push routine\n- PR procedure\n- Agent self-disclosure\n- nf-test and testing\n- References\n\nRun the workflow locally to see which sections differ:\n```\npython3 << \'PYTHON\'\nimport re\n\nwith open(\'resources/AGENTS.md\', \'r\') as f:\n    shared_content = f.read()\n\nfor project in [\'pipeline\', \'plugin\']:\n    with open(f\'resources/{project}/AGENTS.md\', \'r\') as f:\n        project_content = f.read()\n    print(f"\\nChecking {project}...")\nPYTHON\n```'
+              body: '⚠️ **AGENTS.md files are out of sync**\n\nThe following shared sections must be kept synchronized across resources/AGENTS.md, resources/pipeline/AGENTS.md, and resources/plugin/AGENTS.md:\n\n- Natural language\n- Code Comments\n- git and branch policy\n- Commit rules and routine\n- Push routine\n- PR procedure\n- Agent self-disclosure\n- nf-test and testing\n- References\n\nProject files may have additional project-specific content after these sections, but the universal/shared parts must be kept identical to resources/AGENTS.md.\n\nTo fix: Copy the universal content from the matching section in resources/AGENTS.md, then add any project-specific guidance after.'
             })
