@@ -2,11 +2,40 @@
 
 This is the main AI context file for nf-core pipelines. All AI agents and coding assistants **MUST** follow the rules contained in this document.
 
-This document incorporates shared guidelines from [../AGENTS.md](../AGENTS.md), which cover natural language, git policies, commit routines, and more. Please refer to that file for general standards.
-
 ## Natural language
 
-See [../AGENTS.md#natural-language](../AGENTS.md#natural-language) for the shared natural language guidelines.
+All comments and documentation **MUST** be written in English with British spelling. Documentation files **SHOULD** additionally follow the style guide at https://nf-co.re/docs/developing/documentation/style-guide.
+
+### Prose
+
+Prose includes all .md files, description fields in meta files, and comments in code (also in quoted scripts). Prose DOES NOT include any code (including quoted scripts) or standardised fields in other files. In all prose:
+
+- Use short declarative sentences, active voice, no hedges or meta-commentary ("it's worth noting," "note that," "worth mentioning"). State the fact or rule directly instead of narrating that you're about to explain it.
+- Never use em-dashes, use commas or semicolons instead. Avoid non-ASCII characters (e.g. arrows, fancy quotes), except diacritics in names.
+- Use bold and italic formatting sparingly. Avoid bold text in bullet lists.
+- Avoid contrasts, metaphors, rhetorical questions, and punchy sentences. Avoid enumerations. If multiple items need to be listed, use a bullet list. Never repeat a sentence structure multiple times in a row.
+- Never "correct" established terminology. A tool's actual name, a CLI flag, a package name, or a field's standard term is not a prose style choice - leave it exactly as the ecosystem spells it, even inside otherwise-edited prose.
+- Don't write "as shown below" or "we'll cover this later" - state the fact where it's needed, or reorder so the explanation comes first. A comment or doc section should make sense read in isolation.
+- Scope to the immediate task, not the whole topic. A code comment supports the one line/block it sits above; a README section supports the reader doing the thing that section is under.
+
+## Code Comments
+
+Code exists to show _how_; comments carry _why_ — a non-obvious constraint, deliberate deviation, gotcha, or workaround. Apply this discipline across all projects:
+
+- Default to no comment. Write comments only when code alone cannot convey the reasoning.
+- Never narrate the code ("loop over users", "parse the body") or restate names, types, or signatures.
+- Never narrate the change ("fixed X", "updated to Y", "as requested"). A comment must read correctly to someone seeing the file fresh; change context belongs in the commit message.
+- Delete by default. A comment restating a decision the code already reflects is dead weight. Keep inline only what readers need _at that line_ and cannot get from the code — a non-obvious invariant/constraint or a cross-file sync obligation.
+- Comments must stand on their own with any link removed. Encode the substance; never use a pointer as a substitute. Avoid point-in-time artifacts (specs, section numbers, design docs) that rot over time. Fine: a maintained doc/README at a stable path as breadcrumb context.
+- Apply Occam's razor to every comment you keep. A genuine _why_ can still be 3x too long. Keep only the one non-obvious fact a reader needs _at that line_, in the fewest words. Cut the mechanism the code shows, downstream consequences, and justification-of-the-justification.
+- A one-line summary on a public function/endpoint is fine; inline restatement of a single clear line never is.
+- TODOs are fine and do not need issue IDs, but a TODO is a marker, not a substitute for doing the work in scope.
+
+For Nextflow code specifically, before committing changes, always review code comments on the diff:
+
+- Use inline comments to explain non-obvious Nextflow channel logic, tuple unpacking decisions, or groovy closures.
+- Document why a particular module configuration (`ext.args`, `ext.prefix`) was chosen when it deviates from convention.
+- Never comment the structure of process inputs/outputs or channel operations that follow standard nf-core patterns; the code is self-documenting.
 
 ## Key nf-core terms
 
@@ -96,55 +125,60 @@ Write the names of subtool modules in commands with a slash, like `samtools/sort
 
 ## nf-test and testing
 
-See [../AGENTS.md#nf-test-and-testing](../AGENTS.md#nf-test-and-testing) for shared testing principles.
-
-For pipelines specifically:
-
 - Each pipeline **MUST** have at least 1 test case.
 - Tests have a standardized syntax, with setup (optional), input ("when"), and assertion ("then") sections.
 - Tests at a path can be executed with `nf-test test {path}`.
+- Most tests create at least 1 snapshot file. You **MUST NOT** edit snapshots manually.
+- If you expect the output to change (e.g. after a tool update), update the snapshot with `nf-test test --profile +{docker|singularity|conda} --update-snapshot`. Only regenerate snapshots on the same CPU architecture as CI.
+- If a new output file has unstable content, add it to `.nftignore`.
 
 ## git and branch policy
 
 This repository has at least 3 git branches: `main` (or `master`), `dev`, and `TEMPLATE`.
 
 - You **MUST NOT** switch or write to the TEMPLATE branch.
-- See [../AGENTS.md#git-and-branch-policy](../AGENTS.md#git-and-branch-policy) for general git guidelines.
-- For pipelines specifically: Always create a new branch with a meaningful name for each feature, then open a pull request to `dev` (not `main`).
-
-## Code Comments
-
-See [../AGENTS.md#code-comments](../AGENTS.md#code-comments) for shared code comment principles.
-
-For Nextflow code specifically, before committing changes, always review code comments on the diff:
-
-- Use inline comments to explain non-obvious Nextflow channel logic, tuple unpacking decisions, or groovy closures.
-- Document why a particular module configuration (`ext.args`, `ext.prefix`) was chosen when it deviates from convention.
-- Never comment the structure of process inputs/outputs or channel operations that follow standard nf-core patterns; the code is self-documenting.
+- You **MUST NOT** write any code to `main`; use a pull request instead.
+- Always create a new branch with a meaningful name for each feature, then open a pull request to `dev`.
+- You **MUST NOT** commit feature work directly to `dev`, even on a fork.
+- If you work on multiple features in parallel, you **SHOULD** use a separate worktree for each task to prevent clobber.
 
 ## Commit rules and routine
 
-See [../AGENTS.md#commit-rules-and-routine](../AGENTS.md#commit-rules-and-routine) for general commit guidelines. For pipelines specifically:
-
+- Each commit **SHOULD** contain one logical change.
+  - A commit **MAY** contain changes in multiple lines and files, as long as they have a shared purpose.
+- Commit title **SHOULD** be concise and written in imperative mood.
 - If the commit consists only of installing or updating an nf-core module or subworkflow, limit the commit title to `Install/update nf-core module/subworkflow {name}`.
 - If you have edited any Nextflow files, run `nextflow lint -format` for each. If any errors appear, resolve them and re-run the command.
+- Before each commit, you **MUST** stage changes and then run `prek`. Resolve all errors and all possible warnings. Repeat until there are no solvable outstanding issues.
 
 ## Push routine
 
-See [../AGENTS.md#push-routine](../AGENTS.md#push-routine) for general guidelines. For pipelines specifically:
-
+- You should only push to GitHub after implementing some meaningful changes and if the code is working.
+- You **MUST** obtain permission from the user before pushing.
+- You **MUST NOT** force-push.
+  - You **MAY** use `--force-with-lease` **ONLY** if you have rewritten commit history.
+  - If a push is rejected by the remote, notify the user and wait.
 - Before pushing, you **MUST** run `nf-core pipelines lint`, resolve all errors and all possible warnings. Repeat until there are no solvable outstanding issues.
 - If you are preparing a release (PR to main), use `nf-core pipelines lint --release` instead.
 - You **MUST** also run `nf-test test tests/`. If the pipeline fails, resolve the underlying issues. If the test fails due to mismatching snapshots, update them if permitted (see "nf-test and testing" above). Otherwise, fix the issue that caused the unexpected change.
+- If you know the code will cause issues or you intend to push more changes, you **SHOULD** add `[skip ci]` at the end of the commit title. You **SHOULD** omit this tag for final review-ready commits.
 
 ## PR procedure
 
-See [../AGENTS.md#pr-procedure](../AGENTS.md#pr-procedure) for general guidelines. For pipelines: each PR requires reviews (1 for dev, 2 for main) and passing CI before merging.
+- A PR **SHOULD** contain a single feature.
+- You **SHOULD** add a line in the relevant section in CHANGELOG.md, listing contributors and the expected PR number.
+- The PR **MUST** use and follow the nf-core PR template, including the checklist.
+- The PR message **SHOULD** start with a brief explanation of the changes made and the motivation.
+- Each PR requires reviews (1 for dev, 2 for main) and passing CI before merging.
+- A human can request PR reviews on Slack.
 
 ## Agent self-disclosure
 
-See [../AGENTS.md#agent-self-disclosure](../AGENTS.md#agent-self-disclosure).
+- If you generated a majority of the code in a commit, you **MUST** add "Generated by {your name}" at the end of the commit message body.
+- If you open a PR autonomously, you **MUST** add "Generated by {your name}" at the end of the PR message (above the checklist).
 
 ## References
 
-See [../AGENTS.md#references](../AGENTS.md#references) for shared references.
+- Nextflow documentation: https://docs.seqera.io/nextflow
+- nf-core tools documentation: https://nf-co.re/docs/nf-core-tools/
+- nf-test documentation: https://www.nf-test.com/docs/getting-started/

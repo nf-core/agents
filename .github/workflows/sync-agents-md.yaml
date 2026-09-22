@@ -1,0 +1,102 @@
+name: Sync AGENTS.md files
+
+on:
+  pull_request:
+    paths:
+      - 'resources/AGENTS.md'
+      - 'resources/pipeline/AGENTS.md'
+      - 'resources/plugin/AGENTS.md'
+
+jobs:
+  check-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check AGENTS.md sync
+        run: |
+          python3 << 'PYTHON'
+          import re
+          import sys
+
+          with open('resources/AGENTS.md', 'r') as f:
+              shared_content = f.read()
+
+          # Define sections that should be identical across files
+          shared_sections = [
+              'Natural language',
+              'Code Comments',
+              'git and branch policy',
+              'Commit rules and routine',
+              'Push routine',
+              'PR procedure',
+              'Agent self-disclosure',
+              'nf-test and testing',
+              'References'
+          ]
+
+          errors = []
+
+          # Check each project file
+          for project in ['pipeline', 'plugin']:
+              with open(f'resources/{project}/AGENTS.md', 'r') as f:
+                  project_content = f.read()
+
+              for section in shared_sections:
+                  # Extract section from shared file
+                  shared_match = re.search(
+                      f'## {section}\n(.*?)(?=\n## |\Z)',
+                      shared_content,
+                      re.DOTALL
+                  )
+                  if not shared_match:
+                      errors.append(f"Section '{section}' missing from resources/AGENTS.md")
+                      continue
+
+                  shared_text = shared_match.group(1).strip()
+
+                  # Find section in project file
+                  project_match = re.search(
+                      f'## {section}\n(.*?)(?=\n## |\Z)',
+                      project_content,
+                      re.DOTALL
+                  )
+
+                  if not project_match:
+                      errors.append(f"Section '{section}' missing from resources/{project}/AGENTS.md")
+                      continue
+
+                  project_text = project_match.group(1).strip()
+
+                  # For shared sections, verify exact match
+                  if shared_text != project_text:
+                      shared_lines = len(shared_text.split('\n'))
+                      project_lines = len(project_text.split('\n'))
+                      errors.append(
+                          f"Section '{section}' differs between resources/AGENTS.md "
+                          f"and resources/{project}/AGENTS.md\n"
+                          f"  Shared: {shared_lines} lines\n"
+                          f"  {project}: {project_lines} lines"
+                      )
+
+          if errors:
+              print("❌ AGENTS.md files are out of sync:\n")
+              for error in errors:
+                  print(f"  - {error}")
+              sys.exit(1)
+          else:
+              print("✓ All shared sections are in sync")
+              sys.exit(0)
+          PYTHON
+
+      - name: Comment on PR if out of sync
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '⚠️ **AGENTS.md files are out of sync**\n\nPlease ensure the following shared sections are identical across all three files:\n- Natural language\n- Code Comments\n- git and branch policy\n- Commit rules and routine\n- Push routine\n- PR procedure\n- Agent self-disclosure\n- nf-test and testing\n- References\n\nRun the workflow locally to see which sections differ:\n```\npython3 << \'PYTHON\'\nimport re\n\nwith open(\'resources/AGENTS.md\', \'r\') as f:\n    shared_content = f.read()\n\nfor project in [\'pipeline\', \'plugin\']:\n    with open(f\'resources/{project}/AGENTS.md\', \'r\') as f:\n        project_content = f.read()\n    print(f"\\nChecking {project}...")\nPYTHON\n```'
+            })
