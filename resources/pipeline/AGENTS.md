@@ -2,30 +2,11 @@
 
 This is the main AI context file for nf-core pipelines. All AI agents and coding assistants **MUST** follow the rules contained in this document.
 
+This document incorporates shared guidelines from [../AGENTS_shared.md](../AGENTS_shared.md), which cover natural language, git policies, commit routines, and more. Please refer to that file for general standards.
+
 ## Natural language
 
-All comments and documentation **MUST** be written in English with British spelling. Documentation files **SHOULD** additionally follow the style guide at https://nf-co.re/docs/developing/documentation/style-guide.
-
-### Prose
-Prose includes all .md files, description fields in meta files, and comments in code (also in quoted scripts). Prose DOES NOT include any code (including quoted scripts) or standardised fields in other files. In all prose:
-- Use short declarative sentences, active voice, no hedges or meta-commentary
-  ("it's worth noting," "note that," "worth mentioning"). State the fact or rule
-  directly instead of narrating that you're about to explain it.
-- Never use em-dashes, use commas or semicolons instead.
-  Avoid non-ASCII characters (e.g. arrows, fancy quotes), except diacritics in names.
-- Use bold and italic formatting sparingly. Avoid bold text in bullet lists.
-- Avoid contrasts, metaphors, rhetorical questions, and punchy sentences.
-  Avoid enumerations. If multiple items need to be listed, use a bullet list.
-  Never repeat a sentence structure multiple times in a row.
-- Never "correct" established terminology. A tool's actual name, a CLI flag,
-  a package name, or a field's standard term is not a prose style choice - leave
-  it exactly as the ecosystem spells it, even inside otherwise-edited prose.
-- Don't write "as shown below" or "we'll cover this later" - state the fact where
-  it's needed, or reorder so the explanation comes first. A comment or doc section
-  should make sense read in isolation.
-- Scope to the immediate task, not the whole topic. A code comment supports
-  the one line/block it sits above; a README section supports the reader doing
-  the thing that section is under.
+See [../AGENTS_shared.md#natural-language](../AGENTS_shared.md#natural-language) for the shared natural language guidelines.
 
 ## Key nf-core terms
 
@@ -127,48 +108,32 @@ Write the names of subtool modules in commands with a slash, like `samtools/sort
 This repository has at least 3 git branches: `main` (or `master`), `dev`, and `TEMPLATE`.
 
 - You **MUST NOT** switch or write to the TEMPLATE branch.
-- You **MUST NOT** write any code to `main`; use a pull request instead.
-- Always create a new branch with a meaningful name for each feature, then open a pull request to `dev`.
-- You **MUST NOT** commit feature work directly to `dev`, even on a fork.
-- If you work on multiple features in parallel, you **SHOULD** use a separate worktree for each task to prevent clobber.
+- See [../AGENTS_shared.md#git-and-branch-policy](../AGENTS_shared.md#git-and-branch-policy) for general git guidelines.
+- For pipelines specifically: Always create a new branch with a meaningful name for each feature, then open a pull request to `dev` (not `main`).
 
 ## Commit rules and routine
 
-- Each commit **SHOULD** contain one logical change.
-    - A commit **MAY** contain changes in multiple lines and files, as long as they have a shared purpose.
-- Commit title **SHOULD** be concise and written in imperative mood.
+See [../AGENTS_shared.md#commit-rules-and-routine](../AGENTS_shared.md#commit-rules-and-routine) for general commit guidelines. For pipelines specifically:
+
 - If the commit consists only of installing or updating an nf-core module or subworkflow, limit the commit title to `Install/update nf-core module/subworkflow {name}`.
 - If you have edited any Nextflow files, run `nextflow lint -format` for each. If any errors appear, resolve them and re-run the command.
-- Before each commit, you **MUST** stage changes and then run `prek`. Resolve all errors and all possible warnings. Repeat until there are no solvable outstanding issues.
 
 ## Push routine
 
-- You should only push to GitHub after implementing some meaningful changes and if the code is working.
-- You **MUST** obtain permission from the user before pushing.
-- You **MUST NOT** force-push.
-    - You **MAY** use `--force-with-lease` **ONLY** if you have rewritten commit history.
-    - If a push is rejected by the remote, notify the user and wait.
+See [../AGENTS_shared.md#push-routine](../AGENTS_shared.md#push-routine) for general guidelines. For pipelines specifically:
+
 - Before pushing, you **MUST** run `nf-core pipelines lint`, resolve all errors and all possible warnings. Repeat until there are no solvable outstanding issues.
 - If you are preparing a release (PR to main), use `nf-core pipelines lint --release` instead.
 - You **MUST** also run `nf-test test tests/`. If the pipeline fails, resolve the underlying issues. If the test fails due to mismatching snapshots, update them if permitted (see "nf-test and testing" above). Otherwise, fix the issue that caused the unexpected change.
-- If you know the code will cause issues or you intend to push more changes, you **SHOULD** add `[skip ci]` at the end of the commit title. You **SHOULD** omit this tag for final review-ready commits.
 
 ## PR procedure
 
-- A PR **SHOULD** contain a single feature.
-- You **SHOULD** add a line in the relevant section in CHANGELOG.md, listing contributors and the expected PR number.
-- The PR **MUST** use and follow the nf-core PR template, including the checklist.
-- The PR message **SHOULD** start with a brief explanation of the changes made and the motivation.
-- Each PR requires reviews (1 for dev, 2 for main) and passing CI before merging.
-- A human can request PR reviews on Slack.
+See [../AGENTS_shared.md#pr-procedure](../AGENTS_shared.md#pr-procedure) for general guidelines. For pipelines: each PR requires reviews (1 for dev, 2 for main) and passing CI before merging.
 
 ## Agent self-disclosure
 
-- If you generated a majority of the code in a commit, you **MUST** add "Generated by {your name}" at the end of the commit message body.
-- If you open a PR autonomously, you **MUST** add "Generated by {your name}" at the end of the PR message (above the checklist).
+See [../AGENTS_shared.md#agent-self-disclosure](../AGENTS_shared.md#agent-self-disclosure).
 
 ## References
 
-- Nextflow documentation: https://docs.seqera.io/nextflow
-- nf-core tools documentation: https://nf-co.re/docs/nf-core-tools/
-- nf-test documentation: https://www.nf-test.com/docs/getting-started/
+See [../AGENTS_shared.md#references](../AGENTS_shared.md#references) for shared references.
