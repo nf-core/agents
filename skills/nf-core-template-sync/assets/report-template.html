@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{TITLE}}</title>
+    <style>
+      :root {
+        --bg: #fbfbfa;
+        --surface: #ffffff;
+        --surface-2: #f3f3f1;
+        --text: #1d1d1b;
+        --muted: #5f5f5a;
+        --border: #e2e2dd;
+        --accent: #1f6f5c;
+        --accent-soft: #e3f1ec;
+        --pass: #2e7d32;
+        --pass-soft: #e5f3e6;
+        --fail: #b3261e;
+        --fail-soft: #fbe9e7;
+        --warn: #a35c00;
+        --warn-soft: #fbefdc;
+        --info: #2459a6;
+        --info-soft: #e6eefa;
+        --code-bg: #f1f1ee;
+        --c1: #1f6f5c;
+        --c2: #2459a6;
+        --c3: #a35c00;
+        --c4: #7b3fa0;
+        --c5: #b3261e;
+        --c6: #5f5f5a;
+        --c7: #2e7d32;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #151514;
+          --surface: #1d1d1b;
+          --surface-2: #252523;
+          --text: #ecece8;
+          --muted: #a3a39c;
+          --border: #34342f;
+          --accent: #6cc4a8;
+          --accent-soft: #1c2f29;
+          --pass: #81c995;
+          --pass-soft: #1d2e20;
+          --fail: #f28b82;
+          --fail-soft: #3a1e1c;
+          --warn: #f0b25c;
+          --warn-soft: #33261a;
+          --info: #8db4ee;
+          --info-soft: #1b2638;
+          --code-bg: #262624;
+          --c1: #6cc4a8;
+          --c2: #8db4ee;
+          --c3: #f0b25c;
+          --c4: #c79be0;
+          --c5: #f28b82;
+          --c6: #a3a39c;
+          --c7: #81c995;
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #151514;
+        --surface: #1d1d1b;
+        --surface-2: #252523;
+        --text: #ecece8;
+        --muted: #a3a39c;
+        --border: #34342f;
+        --accent: #6cc4a8;
+        --accent-soft: #1c2f29;
+        --pass: #81c995;
+        --pass-soft: #1d2e20;
+        --fail: #f28b82;
+        --fail-soft: #3a1e1c;
+        --warn: #f0b25c;
+        --warn-soft: #33261a;
+        --info: #8db4ee;
+        --info-soft: #1b2638;
+        --code-bg: #262624;
+        --c1: #6cc4a8;
+        --c2: #8db4ee;
+        --c3: #f0b25c;
+        --c4: #c79be0;
+        --c5: #f28b82;
+        --c6: #a3a39c;
+        --c7: #81c995;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font:
+          16px/1.6 system-ui,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+      }
+      main {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 32px 16px 80px;
+      }
+      h1 {
+        font-size: 1.8rem;
+        line-height: 1.2;
+        margin: 0 0 6px;
+      }
+      h2 {
+        font-size: 1.3rem;
+        margin: 0 0 12px;
+      }
+      h3 {
+        font-size: 1.05rem;
+        margin: 18px 0 8px;
+      }
+      p {
+        margin: 0 0 12px;
+      }
+      a {
+        color: var(--accent);
+      }
+      code {
+        font:
+          0.88em/1.4 ui-monospace,
+          SFMono-Regular,
+          Menlo,
+          monospace;
+        background: var(--code-bg);
+        padding: 1px 5px;
+        border-radius: 4px;
+        overflow-wrap: anywhere;
+      }
+      pre {
+        background: var(--code-bg);
+        padding: 12px;
+        border-radius: 8px;
+        overflow-x: auto;
+        font:
+          0.82rem/1.5 ui-monospace,
+          SFMono-Regular,
+          Menlo,
+          monospace;
+      }
+      ul {
+        margin: 0 0 12px;
+        padding-left: 22px;
+      }
+      .lede {
+        color: var(--muted);
+        margin-bottom: 20px;
+      }
+      section {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 20px;
+        margin: 0 0 18px;
+      }
+      .table-wrap {
+        overflow-x: auto;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        margin: 0 0 12px;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 0.92rem;
+      }
+      th,
+      td {
+        text-align: left;
+        vertical-align: top;
+        padding: 7px 10px;
+        border-bottom: 1px solid var(--border);
+        overflow-wrap: anywhere;
+      }
+      th {
+        background: var(--surface-2);
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+      details {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 8px 12px;
+        margin: 0 0 8px;
+      }
+      details > summary {
+        cursor: pointer;
+        font-weight: 600;
+      }
+      details[open] > summary {
+        margin-bottom: 8px;
+      }
+      .pill {
+        display: inline-block;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        padding: 1px 8px;
+        border-radius: 999px;
+        text-transform: uppercase;
+      }
+      .pass {
+        background: var(--pass-soft);
+        color: var(--pass);
+      }
+      .fail {
+        background: var(--fail-soft);
+        color: var(--fail);
+      }
+      .warn {
+        background: var(--warn-soft);
+        color: var(--warn);
+      }
+      .info,
+      .skip {
+        background: var(--info-soft);
+        color: var(--info);
+      }
+      .facts {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 10px;
+        margin: 0 0 16px;
+      }
+      .fact {
+        background: var(--surface-2);
+        border-radius: 8px;
+        padding: 10px 12px;
+      }
+      .fact b {
+        display: block;
+        font-size: 1.4rem;
+      }
+      .fact span {
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+      .figure {
+        width: 100%;
+        height: auto;
+        display: block;
+        margin: 4px 0 12px;
+      }
+      .figure text {
+        font-family:
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+      }
+      .muted {
+        color: var(--muted);
+        font-size: 0.88rem;
+      }
+      .callout {
+        border-left: 4px solid var(--warn);
+        background: var(--warn-soft);
+        padding: 10px 14px;
+        border-radius: 0 8px 8px 0;
+        margin: 0 0 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>{{TITLE}}</h1>
+      <p class="lede">{{SUBTITLE}}</p>
+      {{BODY}}
+    </main>
+  </body>
+</html>
