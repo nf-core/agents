@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "nf-core-tools",
+  "version": "0.1.0",
+  "description": "Cross-agent nf-core checks and workflow guardrails for Nextflow pipelines, modules, subworkflows, and nf-core tools.",
+  "author": {
+    "name": "nf-core",
+    "url": "https://nf-co.re"
+  },
+  "repository": "https://github.com/nf-core/agents/tree/main/plugins/nf-core-tools",
+  "license": "MIT",
+  "keywords": [
+    "nf-core",
+    "nextflow",
+    "bioinformatics",
+    "pipelines",
+    "workflows",
+    "nf-test"
+  ]
+}

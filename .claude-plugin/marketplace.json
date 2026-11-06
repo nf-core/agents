@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "nf-core-agents",
+  "owner": {
+    "name": "nf-core",
+    "url": "https://nf-co.re"
+  },
+  "plugins": [
+    {
+      "name": "nf-core-tools",
+      "source": "./plugins/nf-core-tools",
+      "description": "Cross-agent nf-core checks and workflow guardrails for nf-core projects",
+      "version": "0.1.0"
+    }
+  ]
+}
