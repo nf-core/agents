@@ -11,14 +11,21 @@
 [![Watch on YouTube](http://img.shields.io/badge/youtube-nf--core-FF0000?labelColor=000000&logo=youtube)](https://www.youtube.com/c/nf-core)
 
 ## About
-This repository contains the official AI agent context files for developing nf-core pipelines. The repository aims to enable swift updates as the field evolves and the community discovers specific agent behaviour.
+
+This repository contains the official AI agent context files for developing nf-core pipelines and plugins. The repository aims to enable swift updates as the field evolves and the community discovers specific agent behaviour.
 
 ## Repository rules
+
 Adding or editing files in this repository requires approval from an nf-core core member (or maintainer with special permissions) and can only be done via pull requests.
 
 ## Files in this repository
-- [`resources/pipeline/AGENTS.md`](resources/pipeline/AGENTS.md): main agent context file containing instructions for the nf-core pipeline template.
+
+- [`resources/AGENTS.md`](resources/AGENTS.md): shared AI agent guidelines used across all nf-core projects (pipelines, plugins, modules, web, and tools).
+- [`resources/pipeline/AGENTS.md`](resources/pipeline/AGENTS.md): agent context file containing instructions for nf-core pipeline repositories. Incorporates shared guidelines from `resources/AGENTS.md`.
+- [`resources/plugin/AGENTS.md`](resources/plugin/AGENTS.md): agent context file containing instructions for nf-core plugin repositories. Incorporates shared guidelines from `resources/AGENTS.md`.
 - [`resources/skills/migrating-nf-core-utils/`](resources/skills/migrating-nf-core-utils/SKILL.md): migrate vendored pipeline utilities to the nf-core-utils Nextflow plugin, update plugin pins and diagnose plugin function errors.
+
+`resources/pipeline/AGENTS.md` and `resources/plugin/AGENTS.md` are generated. Edit `resources/AGENTS.md` or the `AGENTS.template.md` file next to the output, then run `python3 scripts/build_agents.py`. `prek` runs the script and fails if an output is out of date.
 
 ## Using skills
 

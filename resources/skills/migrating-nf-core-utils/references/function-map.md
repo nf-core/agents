@@ -74,13 +74,13 @@ imNotification(summary_params, hook_url)
 
 ## Local helpers
 
-| Local helper | Plugin replacement |
-| --- | --- |
-| `getGenomeAttribute(attribute)` | `getGenomeAttribute(attribute)` from `plugin/nf-core-utils` |
-| `softwareVersionsToYAML(ch_versions)` | `softwareVersionsToYAML(softwareVersions: ch_versions, nextflowVersion: workflow.nextflow.version)` |
-| `processVersionsFromFile` | `softwareVersionsToYAML(softwareVersions: ...)`, after checking the input representation |
-| `paramsSummaryMultiqc(summary_params)` | `paramsSummaryMultiqc(summary_params)` from `plugin/nf-core-utils` |
-| `methodsDescriptionText(mqc_methods_yaml)` | `methodsDescriptionText(mqc_methods_yaml.toString())` for an uncustomised template |
+| Local helper                               | Plugin replacement                                                                                  |
+| ------------------------------------------ | --------------------------------------------------------------------------------------------------- |
+| `getGenomeAttribute(attribute)`            | `getGenomeAttribute(attribute)` from `plugin/nf-core-utils`                                         |
+| `softwareVersionsToYAML(ch_versions)`      | `softwareVersionsToYAML(softwareVersions: ch_versions, nextflowVersion: workflow.nextflow.version)` |
+| `processVersionsFromFile`                  | `softwareVersionsToYAML(softwareVersions: ...)`, after checking the input representation            |
+| `paramsSummaryMultiqc(summary_params)`     | `paramsSummaryMultiqc(summary_params)` from `plugin/nf-core-utils`                                  |
+| `methodsDescriptionText(mqc_methods_yaml)` | `methodsDescriptionText(mqc_methods_yaml.toString())` for an uncustomised template                  |
 
 nf-core-utils 0.7.0 retains `softwareVersionsToYAML` but deprecates it in favour of `collectVersions`. Choose the API supported by the target release and verify its input and return types. Do not combine a version-channel redesign with a helper replacement unless required.
 
