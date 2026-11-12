@@ -11,12 +11,15 @@
 [![Watch on YouTube](http://img.shields.io/badge/youtube-nf--core-FF0000?labelColor=000000&logo=youtube)](https://www.youtube.com/c/nf-core)
 
 ## About
+
 This repository contains the official AI agent context files for developing nf-core pipelines. The repository aims to enable swift updates as the field evolves and the community discovers specific agent behaviour.
 
 ## Repository rules
+
 Adding or editing files in this repository requires approval from an nf-core core member (or maintainer with special permissions) and can only be done via pull requests.
 
 ## Files in this repository
+
 - [`resources/pipeline/AGENTS.md`](resources/pipeline/AGENTS.md): main agent context file containing instructions for the nf-core pipeline template.
 - [`resources/skills/migrating-nf-core-utils/`](resources/skills/migrating-nf-core-utils/SKILL.md): migrate vendored pipeline utilities to the nf-core-utils Nextflow plugin, update plugin pins and diagnose plugin function errors.
 
