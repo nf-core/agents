@@ -11,3 +11,11 @@ repos:
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
       - id: end-of-file-fixer
+  - repo: local
+    hooks:
+      - id: build-agents
+        name: generate project AGENTS.md
+        entry: python3 scripts/build_agents.py
+        language: system
+        files: AGENTS|build_agents
+        pass_filenames: false
