@@ -25,7 +25,7 @@ Adding or editing files in this repository requires approval from an nf-core cor
 - [`resources/plugin/AGENTS.md`](resources/plugin/AGENTS.md): agent context file containing instructions for nf-core plugin repositories. Incorporates shared guidelines from `resources/AGENTS.md`.
 - [`resources/skills/migrating-nf-core-utils/`](resources/skills/migrating-nf-core-utils/SKILL.md): migrate vendored pipeline utilities to the nf-core-utils Nextflow plugin, update plugin pins and diagnose plugin function errors.
 
-`resources/pipeline/AGENTS.md` and `resources/plugin/AGENTS.md` are generated. Edit `resources/AGENTS.md` or the `AGENTS.template.md` file next to the output, then run `python3 scripts/build_agents.py`. `prek` runs the script and fails if an output is out of date.
+`resources/pipeline/AGENTS.md` and `resources/plugin/AGENTS.md` are generated. Edit `resources/AGENTS.md` or the `AGENTS.template.md` file next to the output, then run `python3 scripts/build_agents.py`.
 
 ## Using skills
 
