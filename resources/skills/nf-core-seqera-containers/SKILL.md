@@ -40,7 +40,7 @@ nf-core --version   # expect a .dev0 version
 bash <skill-dir>/scripts/convert.sh <module> <module> ...
 ```
 
-Replace `<skill-dir>` with the directory you installed this skill into, for example `.claude/skills/nf-core-seqera-containers`. For each module the script runs `nf-core modules bump-versions`, then `nf-core modules containers create` if the module is still on quay.io. It runs them one after another, because parallel runs fail on nf-core's shared git cache. Logs go to `$TMPDIR/seqera-containers/`.
+Replace `<skill-dir>` with the directory you installed this skill into, for example `.claude/skills/nf-core-seqera-containers`. For each module the script runs `nf-core modules bump-versions`, then `nf-core modules containers create` if the module is still on quay.io. It runs one module at a time and holds a lock under `~/.config/nfcore`, because parallel runs, even from other sessions on the same machine, fail on nf-core's shared git cache. If a module fails with a git or cache error, run `convert.sh` again for just that module. Logs go to `$TMPDIR/seqera-containers/`.
 
 The script leaves you with:
 
