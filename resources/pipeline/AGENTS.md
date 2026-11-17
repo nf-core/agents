@@ -20,7 +20,7 @@ Prose includes all .md files, description fields in meta files, and comments in 
   Avoid enumerations. If multiple items need to be listed, use a bullet list.
   Never repeat a sentence structure multiple times in a row.
 - Never "correct" established terminology. A tool's actual name, a CLI flag,
-  a package name, or a field's standard term is not a prose style choice - leave
+  a package name, or a field's standard term is not a prose style choice; leave
   it exactly as the ecosystem spells it, even inside otherwise-edited prose.
 - Don't write "as shown below" or "we'll cover this later" - state the fact where
   it's needed, or reorder so the explanation comes first. A comment or doc section
@@ -44,7 +44,7 @@ Prose includes all .md files, description fields in meta files, and comments in 
 
 ## nf-core template structure
 
-The directory you are working on was created with the nf-core pipeline template. Key features of the template are demonstrated below:
+The directory you are working on was created with the nf-core pipeline template. The template has the following structure:
 
 ```
 .
@@ -53,12 +53,12 @@ The directory you are working on was created with the nf-core pipeline template.
 ├── main.nf                // core Nextflow script, may need editing if input structure changes
 ├── modules                // Nextflow DSL2 modules
 │   ├── local              // local modules (see "Modules" below)
-|   |   └── mymodule       // each module must be in a separate directory
+│   │   └── mymodule       // each module must be in a separate directory
 │   └── nf-core            // nf-core modules (see "Modules" below)
 ├── nextflow_schema.json   // JSON schema describing pipeline parameters
 ├── subworkflows           // Nextflow subworkflows (see "Subworkflows" below)
 │   ├── local              // local subworkflows
-|   |   └── myswf          // each subworkflow must be in a separate directory
+│   │   └── myswf          // each subworkflow must be in a separate directory
 │   └── nf-core            // nf-core subworkflows
 ├── tests                  // nf-test end-to-end tests for the pipeline
 │   └── default.nf.test    // main test script, must exist
@@ -118,7 +118,7 @@ Write the names of subtool modules in commands with a slash, like `samtools/sort
 ## nf-test and testing
 
 - Each pipeline **MUST** have at least 1 test case.
-- Tests have a standardized syntax, with setup (optional), input ("when"), and assertion ("then") sections.
+- Tests have a standardised syntax, with setup (optional), input ("when"), and assertion ("then") sections.
 - Tests at a path can be executed with `nf-test test {path}`.
 - Most tests create at least 1 snapshot file. You **MUST NOT** edit snapshots manually.
 - If you expect the output to change (e.g. after a tool update), update the snapshot with `nf-test test --profile +{docker|singularity|conda} --update-snapshot`. Only regenerate snapshots on the same CPU architecture as CI.
@@ -134,18 +134,18 @@ This repository has at least 3 git branches: `main` (or `master`), `dev`, and `T
 - You **MUST NOT** commit feature work directly to `dev`, even on a fork.
 - If you work on multiple features in parallel, you **SHOULD** use a separate worktree for each task to prevent clobber.
 
-## Code Comments
+## Code comments
 
 Before committing changes, always review code comments on the diff:
 
-- Default to no comment. Code shows _how_; comment only to carry _why_ — a non-obvious constraint, deliberate deviation, gotcha, or workaround.
+- Default to no comment. Code shows _how_; comment only to carry _why_: a non-obvious constraint, deliberate deviation, gotcha, or workaround.
 - Never narrate the code ("loop over users", "parse the body"), restate names/types/signatures, or mark block ends.
 - Never narrate the change ("fixed X", "updated to Y", "as requested"). A comment must read correctly to someone seeing the file fresh who never saw the diff; change context belongs in the commit message.
-- Delete by default. A comment that just restates a decision the code already reflects — "1 vCPU is deliberate", "right-sized from prod" — is dead weight even when it points to a doc: the doc is where anyone questioning it looks anyway. Keep inline only what a reader needs _at that line_ and can't get from the code — a non-obvious invariant/constraint ("timeout must stay < interval — ALB rule") or a cross-file sync obligation ("keep in sync with the router's TGs").
-- Comments must stand on their own with any link removed — encode the substance, never a pointer as a substitute for it. Banned: specs, section numbers, design docs — point-in-time artifacts that get superseded and rot ("spec §7" is the canonical case). Fine: a maintained doc/README at a stable path — and when the _why_ is a system-level narrative ("why it's built this way"), extract it there as a _pure_ extraction: not an inline block, and not a comment that merely points to the doc. What stays inline are the non-obvious local details, which reference the doc only when a reader genuinely needs it _at that line_ — a pointer-only comment generally shouldn't exist at all. Tickets, Confluence, RFCs, permalinks stay fine as trailing breadcrumbs.
-- Occam's razor on every comment you _keep_, not just the ones you delete. "Carries a real _why_" and "is worded minimally" are independent judgments — a genuine _why_ can still be 3x too long, and "it's a real why" is not license to keep the wording verbatim. Keep only the one non-obvious fact a reader needs _at that line_, in the fewest words; cut the mechanism the code already shows, where a value is consumed downstream, the consequence-of-the-consequence, and justification-of-the-justification. A 5-line block almost never survives intact — suspect it on sight; the razored answer is sometimes zero.
+- Delete by default. A comment that just restates a decision the code already reflects ("1 vCPU is deliberate", "right-sized from prod") is dead weight even when it points to a doc: the doc is where anyone questioning it looks anyway. Keep inline only what a reader needs _at that line_ and can't get from the code: a non-obvious invariant/constraint ("timeout must stay < interval, ALB rule") or a cross-file sync obligation ("keep in sync with the router's TGs").
+- Comments must stand on their own with any link removed; encode the substance, never a pointer as a substitute for it. Banned: specs, section numbers, design docs, and other point-in-time artefacts that get superseded and rot ("spec section 7" is the canonical case). Fine: a maintained doc/README at a stable path. When the _why_ is a system-level narrative ("why it's built this way"), extract it there as a _pure_ extraction: not an inline block, and not a comment that merely points to the doc. What stays inline are the non-obvious local details, which reference the doc only when a reader genuinely needs it _at that line_; a pointer-only comment generally shouldn't exist at all. Tickets, Confluence, RFCs, permalinks stay fine as trailing breadcrumbs.
+- Occam's razor on every comment you _keep_, not just the ones you delete. "Carries a real _why_" and "is worded minimally" are independent judgements; a genuine _why_ can still be 3x too long, and "it's a real why" is not license to keep the wording verbatim. Keep only the one non-obvious fact a reader needs _at that line_, in the fewest words; cut the mechanism the code already shows, where a value is consumed downstream, the consequence-of-the-consequence, and justification-of-the-justification. A 5-line block almost never survives intact, so suspect it on sight; the razored answer is sometimes zero.
 - A one-line summary on a public function/endpoint is fine; inline restatement of a single clear line never is.
-- TODOs are fine and don't need issue IDs — but a TODO is a marker, not a substitute for doing the work in scope.
+- TODOs are fine and don't need issue IDs, but a TODO is a marker, not a substitute for doing the work in scope.
 
 ## Commit rules and routine
 

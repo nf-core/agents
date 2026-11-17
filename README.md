@@ -1,7 +1,7 @@
 <h1>
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="assets/nf-core-agents_logo_dark.png">
-    <img alt="nf-core/demo" src="assets/nf-core-agents_logo_light.png">
+    <img alt="nf-core/agents" src="assets/nf-core-agents_logo_light.png">
   </picture>
 </h1>
 
