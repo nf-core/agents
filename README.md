@@ -22,6 +22,7 @@ Adding or editing files in this repository requires approval from an nf-core cor
 
 - [`resources/pipeline/AGENTS.md`](resources/pipeline/AGENTS.md): main agent context file containing instructions for the nf-core pipeline template.
 - [`resources/skills/migrating-nf-core-utils/`](resources/skills/migrating-nf-core-utils/SKILL.md): migrate vendored pipeline utilities to the nf-core-utils Nextflow plugin, update plugin pins and diagnose plugin function errors.
+- [`resources/skills/nf-core-seqera-containers/`](resources/skills/nf-core-seqera-containers/SKILL.md): move a batch of nf-core/modules modules from quay.io to Seqera Containers, test them and open a draft PR. Use it from a clone of nf-core/modules.
 
 ## Using skills
 
